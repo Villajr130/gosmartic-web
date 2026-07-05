@@ -92,8 +92,8 @@
           );
         };
 
-        // ==========================================
-        // COMPONENTE: HEADER
+// ==========================================
+        // COMPONENTE: HEADER (CORREGIDO PARA MÓVILES)
         // ==========================================
         const Header = ({ onNavigate, onLogoTripleClick, activeFilter, onSelectCategory }) => {
           const [clickCount, setClickCount] = React.useState(0);
@@ -128,16 +128,19 @@
 
           return (
             <header className="bg-black border-b border-gray-900 sticky top-0 z-50">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-                <div className="cursor-pointer" onClick={handleLogoClick}>
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-auto min-h-[80px] py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+                {/* Logo */}
+                <div className="cursor-pointer flex-shrink-0" onClick={handleLogoClick}>
                   <Logo lightBg={false} />
                 </div>
-                <nav className="flex space-x-6">
-                  <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); onSelectCategory('all'); }} className="font-sans font-medium text-gray-300 hover:text-[#06b6d4] transition-colors">In Evidenza</a>
-                  <a href="#" onClick={(e) => handleCategoryClick(e, 'PC & Laptop')} className={`font-sans font-medium transition-colors ${activeFilter === 'PC & Laptop' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>PC & Laptop</a>
-                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Telefoni')} className={`font-sans font-medium transition-colors ${activeFilter === 'Telefoni' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Telefoni</a>
-                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Smart TV')} className={`font-sans font-medium transition-colors ${activeFilter === 'Smart TV' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Smart TV</a>
-                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Accessori Tech')} className={`font-sans font-medium transition-colors ${activeFilter === 'Accessori Tech' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Accessori Tech</a>
+                
+                {/* Menú de Categorías Adaptable */}
+                <nav className="flex items-center space-x-2 md:space-x-6 max-w-full overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap pb-2 md:pb-0 px-2">
+                  <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); onSelectCategory('all'); }} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'all' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>In Evidenza</a>
+                  <a href="#" onClick={(e) => handleCategoryClick(e, 'PC & Laptop')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'PC & Laptop' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>PC & Laptop</a>
+                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Telefoni')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Telefoni' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Telefoni</a>
+                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Smart TV')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Smart TV' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Smart TV</a>
+                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Accessori Tech')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Accessori Tech' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Accessori Tech</a>
                 </nav>
               </div>
             </header>
