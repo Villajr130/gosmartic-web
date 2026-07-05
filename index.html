@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GoSmArtic - Offerte Tech Amazon 2026</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-gray-50 antialiased">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        // ==========================================
+        // VALORES INICIALES (MOCK DATA DE RESPALDO)
+        // ==========================================
+        const INITIAL_PRODUCTS = [
+          {
+            id: 1,
+            nombre: "Apple iPhone Air 256 GB (Disponibile su Amazon)",
+            categoria: "Telefoni",
+            descripcionCorta: "Il nuovo standard di leggerezza e potenza con chip M4 e display OLED ProMotion adattivo di ultima generazione.",
+            imagenUrl: "https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?auto=format&fit=crop&w=400&q=80",
+            linkAmazon: "https://www.amazon.it"
+          },
+          {
+            id: 2,
+            nombre: "Dell 15 Laptop DC15250 15,6\" FHD 120Hz",
+            categoria: "PC & Laptop",
+            descripcionCorta: "Notebook equilibrato e reattivo con Intel Core i5 di 13ª gen, 16GB RAM e 512GB SSD. Display 120Hz antiriflesso in finitura Carbon Black. (Caricatore venduto separatamente).",
+            imagenUrl: "https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=400&q=80",
+            linkAmazon: "https://www.amazon.it"
+          },
+          {
+            id: 3,
+            nombre: "Samsung Neo QLED 8K 65 pollici (Spedito da Amazon)",
+            categoria: "Smart TV",
+            descripcionCorta: "Risoluzione 8K reale con Intelligenza Artificiale quantistica e sistema di audio multidirezionale integrato.",
+            imagenUrl: "https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&fit=crop&w=400&q=80",
+            linkAmazon: "https://www.amazon.it"
+          },
+          {
+            id: 4,
+            nombre: "Sony WH-1000XM6 Wireless Cuffie",
+            categoria: "Accessori Tech",
+            descripcionCorta: "Cancellazione del rumore leader del settore ridefinita con audio spaziale dinamico e 40 ore di autonomia.",
+            imagenUrl: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=400&q=80",
+            linkAmazon: "https://www.amazon.it"
+          },
+          {
+            id: 5,
+            nombre: "Google Pixel 10 Pro 5G",
+            categoria: "Telefoni",
+            descripcionCorta: "L'esperienza pura di Android con capacità fotografiche rivoluzionarie alimentate interamente da Gemini AI.",
+            imagenUrl: "https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=400&q=80",
+            linkAmazon: "https://www.amazon.it"
+          },
+          {
+            id: 6,
+            nombre: "Logitech MX Master 4S Mouse",
+            categoria: "Accessori Tech",
+            descripcionCorta: "Il mouse ergonomico definitivo per la produttività con scorrimento magnetico ultrarapido e clic silenziosi.",
+            imagenUrl: "https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?auto=format&fit=crop&w=400&q=80",
+            linkAmazon: "https://www.amazon.it"
+          }
+        ];
+
+        const INITIAL_HERO = {
+          badge: "New 2026 · Tech di ultima generazione",
+          title: "Scopri le migliori offerte di tecnologia",
+          description: "Analizziamo costantemente il mercato per proporti i dispositivi più all'avanguardia ed efficienti disponibili su Amazon. Risparmia tempo e trova il meglio dell'ecosistema tech."
+        };
+
+        // ==========================================
+        // COMPONENTE: LOGO
+        // ==========================================
+        const Logo = ({ lightBg = false }) => {
+          return (
+            <div className="flex items-center space-x-2 select-none">
+              <div className="relative w-9 h-9 bg-[#2563eb] rounded-full flex items-center justify-center shadow-md">
+                <span className="text-white font-sans font-bold text-lg">G</span>
+                <span className="absolute top-1 right-1 w-2.5 h-2.5 bg-[#06b6d4] rounded-full ring-1 ring-black"></span>
+              </div>
+              <span className={`font-sans font-bold text-xl tracking-tight ${lightBg ? 'text-black' : 'text-white'}`}>
+                Go<span className="text-[#06b6d4]">Sm</span>Ar<span className="text-[#06b6d4]">tic</span>
+              </span>
+            </div>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: HEADER
+        // ==========================================
+        const Header = ({ onNavigate, onLogoTripleClick, activeFilter, onSelectCategory }) => {
+          const [clickCount, setClickCount] = React.useState(0);
+          const [lastClickTime, setLastClickTime] = React.useState(0);
+
+          const handleLogoClick = () => {
+            const currentTime = Date.now();
+            if (currentTime - lastClickTime > 1500) {
+              setClickCount(1);
+            } else {
+              const newCount = clickCount + 1;
+              setClickCount(newCount);
+              
+              if (newCount === 3) {
+                onLogoTripleClick();
+                setClickCount(0);
+              }
+            }
+            setLastClickTime(currentTime);
+          };
+
+          const handleCategoryClick = (e, category) => {
+            e.preventDefault();
+            onNavigate('home');
+            onSelectCategory(category);
+            
+            setTimeout(() => {
+              const element = document.getElementById('tutti-i-prodotti');
+              if (element) element.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          };
+
+          return (
+            <header className="bg-black border-b border-gray-900 sticky top-0 z-50">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+                <div className="cursor-pointer" onClick={handleLogoClick}>
+                  <Logo lightBg={false} />
+                </div>
+                <nav className="flex space-x-6">
+                  <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); onSelectCategory('all'); }} className="font-sans font-medium text-gray-300 hover:text-[#06b6d4] transition-colors">In Evidenza</a>
+                  <a href="#" onClick={(e) => handleCategoryClick(e, 'PC & Laptop')} className={`font-sans font-medium transition-colors ${activeFilter === 'PC & Laptop' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>PC & Laptop</a>
+                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Telefoni')} className={`font-sans font-medium transition-colors ${activeFilter === 'Telefoni' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Telefoni</a>
+                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Smart TV')} className={`font-sans font-medium transition-colors ${activeFilter === 'Smart TV' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Smart TV</a>
+                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Accessori Tech')} className={`font-sans font-medium transition-colors ${activeFilter === 'Accessori Tech' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Accessori Tech</a>
+                </nav>
+              </div>
+            </header>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: HERO SECTION
+        // ==========================================
+        const Hero = ({ data }) => {
+          return (
+            <section className="relative bg-gray-950 min-h-[550px] flex items-center justify-center overflow-hidden py-16">
+              <div className="absolute inset-0 z-0">
+                <img 
+                  src="https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=1600&q=80" 
+                  alt="Tech background" 
+                  className="w-full h-full object-cover opacity-20 filter saturate-150 brightness-75"
+                />
+                <div className="absolute inset-0 bg-gradient-to-r from-black via-[#2563eb]/10 to-[#06b6d4]/10 pointer-events-none"></div>
+              </div>
+
+              <div className="relative z-10 max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+                <div className="inline-flex items-center gap-2 bg-black/50 border border-[#06b6d4] rounded-full px-4 py-1.5 mb-6 backdrop-blur-sm">
+                  <span className="w-2 h-2 rounded-full bg-[#06b6d4] animate-pulse"></span>
+                  <span className="font-sans text-xs uppercase tracking-wider text-gray-300 font-semibold">
+                    {data.badge}
+                  </span>
+                </div>
+
+                <h1 className="font-sans font-bold text-4xl sm:text-6xl text-white tracking-tight leading-tight mb-6">
+                  {data.title}
+                </h1>
+
+                <p className="font-sans text-gray-400 text-lg sm:text-xl max-w-2xl mx-auto mb-10 leading-relaxed">
+                  {data.description}
+                </p>
+
+                <a 
+                  href="#tutti-i-prodotti" 
+                  className="inline-block font-sans font-bold bg-[#2563eb] text-white px-8 py-4 rounded-lg shadow-lg shadow-blue-600/30 hover:bg-blue-700 transition-all duration-300 hover:-translate-y-0.5"
+                >
+                  Esplora il catalogo
+                </a>
+              </div>
+            </section>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: PRODUCT CARD
+        // ==========================================
+        const ProductCard = ({ producto }) => {
+          return (
+            <div className="bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 flex flex-col h-full overflow-hidden transition-all duration-300">
+              <div className="w-full h-48 bg-gray-50 flex items-center justify-center p-4 border-b border-gray-100">
+                <img 
+                  src={producto.imagenUrl || 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&w=400&q=80'} 
+                  alt={producto.nombre} 
+                  className="h-full w-auto max-w-full object-contain mix-blend-multiply"
+                />
+              </div>
+
+              <div className="p-5 flex flex-col flex-grow">
+                <span className="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">
+                  {producto.categoria}
+                </span>
+                
+                <h3 className="font-sans font-bold text-gray-900 text-base line-clamp-1 mb-2">
+                  {producto.nombre}
+                </h3>
+
+                <p className="font-sans text-sm text-gray-500 line-clamp-2 mb-4 flex-grow">
+                  {producto.descripcionCorta}
+                </p>
+
+                <div className="h-6 w-full my-2"></div>
+
+                <a 
+                  href={producto.linkAmazon} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  className="w-full flex items-center justify-center gap-2 font-sans font-bold bg-[#2563eb] text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 mt-auto"
+                >
+                  <span>Compra su Amazon</span>
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: GRID DE PRODUCTOS
+        // ==========================================
+        const ProductGrid = ({ productos }) => {
+          return (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+              {productos.map((producto) => (
+                <ProductCard key={producto.id} producto={producto} />
+              ))}
+            </div>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: SECCIONES HOME
+        // ==========================================
+        const FeaturedSection = ({ productos }) => {
+          const featuredProducts = productos.slice(0, 4);
+          return (
+            <section id="in-evidenza" className="bg-gray-50 py-16 border-b border-gray-200">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="flex items-center gap-3 mb-10">
+                  <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-[#2563eb]">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
+                    </svg>
+                  </div>
+                  <h2 className="font-sans font-bold text-2xl sm:text-3xl text-gray-900">Offerte in Evidenza</h2>
+                </div>
+                {featuredProducts.length === 0 ? (
+                  <div className="text-center py-8 text-gray-400 font-sans">Nessun prodotto in evidenza.</div>
+                ) : (
+                  <ProductGrid productos={featuredProducts} />
+                )}
+              </div>
+            </section>
+          );
+        };
+
+        const AllProductsSection = ({ productos, activeFilter, onResetFilter }) => {
+          const displayedProducts = activeFilter === 'all' 
+            ? productos 
+            : productos.filter(p => p.categoria === activeFilter);
+
+          return (
+            <section id="tutti-i-prodotti" className="bg-gray-50 py-16">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="mb-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                  <div>
+                    <h2 className="font-sans font-bold text-2xl sm:text-3xl text-gray-900">
+                      {activeFilter === 'all' ? 'Tutti i Prodotti' : `Risultati per: ${activeFilter}`}
+                    </h2>
+                    <div className="w-12 h-1 bg-[#2563eb] mt-2 rounded-full"></div>
+                  </div>
+                  {activeFilter !== 'all' && (
+                    <button 
+                      onClick={onResetFilter}
+                      className="inline-flex items-center text-xs font-bold uppercase tracking-wider text-[#2563eb] bg-blue-50 border border-blue-200 px-4 py-2 rounded-lg hover:bg-blue-100 transition-colors"
+                    >
+                      &larr; Mostra Tutti i prodotti
+                    </button>
+                  )}
+                </div>
+                {displayedProducts.length === 0 ? (
+                  <div className="text-center py-12 bg-white rounded-xl border border-dashed border-gray-200 text-gray-400 font-sans">
+                    Nessun prodotto trovato in questa categoria.
+                  </div>
+                ) : (
+                  <ProductGrid productos={displayedProducts} />
+                )}
+              </div>
+            </section>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTI LEGALI
+        // ==========================================
+        const PrivacyPolicyView = ({ onBack }) => {
+          return (
+            <div className="max-w-4xl mx-auto px-4 py-12 font-sans text-gray-800 leading-relaxed">
+              <button onClick={onBack} className="mb-6 inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline">
+                &larr; Torna alla Home
+              </button>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Informativa sulla Privacy (Privacy Policy)</h1>
+              <p className="text-xs text-gray-500 mb-8">Ultimo aggiornamento: Luglio 2026</p>
+              
+              <div className="space-y-6 text-sm">
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">1. Informazioni Generali</h3>
+                  <p>Benvenuto su GoSmArtic. La presente Informativa sulla privacy descrive le modalità con cui raccogliamo, utilizziamo e proteggiamo i dati personali degli utenti che visitano il nostro sito web dedicato alla selezione delle migliori offerte tecnologiche presenti su Amazon.</p>
+                </section>
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">2. Dati Raccolti e Finalità</h3>
+                  <p>GoSmArtic è un sito puramente informativo e di affiliazione commerciale. Non richiediamo la creazione di account né raccogliamo attivamente dati identificativi como nomi o indirizzi fisici. I dati possono essere raccolti nei seguenti modi:</p>
+                  <ul className="list-disc pl-5 mt-2 space-y-1">
+                    <li><strong>Dati di Contatto:</strong> Qualora l'utente decida di contattarci tramite l'indirizzo email <span className="font-semibold text-gray-900">info@gosmartic.com</span>, utilizzeremo l'indirizzo email mittente e il contenuto del messaggio esclusivamente per rispondere alla richiesta.</li>
+                    <li><strong>Dati di Navigazione e Cookie:</strong> Il sito utilizza cookie tecnici e analitici anonimizzati per monitorare il corretto funzionamento dell'interfaccia e comprendere l'interazione generale con le cookies merceologiche.</li>
+                  </ul>
+                </section>
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">3. Affiliazione Amazon ed Cookie di Terze Parti</h3>
+                  <p>Questo sito partecipa al <strong>Programma Affiliazione Amazon EU</strong>. Facendo clic sui pulsanti "Compra su Amazon", l'utente viene reindirizzato alla piattaforma ufficiale Amazon. Amazon utilizza cookie proprietari per tracciare la provenienza dei clic e attribuire correttamente le commissioni generate, in conformità con le proprie politiche sulla privacy.</p>
+                </section>
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">4. Base Giuridica del Trattamento</h3>
+                  <p>Il trattamento dei dati forniti volontariamente tramite email si basa sul legittimo interesse del titolare a rispondere alle richieste degli utenti e sul consenso espresso dell'utente al momento dell'invio della comunicazione.</p>
+                </section>
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">5. Diritti dell'Utente (GDPR)</h3>
+                  <p>In conformità con il Regolamento UE 2016/679 (GDPR), gli utenti hanno il diritto in qualsiasi momento di richiedere l'accesso, la rettifica, la cancellazione o la limitazione del trattamento dei dati inviati via email scrivendo a <span className="font-semibold text-gray-900">info@gosmartic.com</span>.</p>
+                </section>
+              </div>
+            </div>
+          );
+        };
+
+        const TermsOfServiceView = ({ onBack }) => {
+          return (
+            <div className="max-w-4xl mx-auto px-4 py-12 font-sans text-gray-800 leading-relaxed">
+              <button onClick={onBack} className="mb-6 inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline">
+                &larr; Torna alla Home
+              </button>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">Termini di Servizio (Terms of Service)</h1>
+              <p className="text-xs text-gray-500 mb-8">Ultimo aggiornamento: Luglio 2026</p>
+              
+              <div className="space-y-6 text-sm">
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">1. Accettazione dei Termini</h3>
+                  <p>L'accesso e l'utilizzo del sito GoSmArtic sono soggetti all'accettazione e alla conformità con i presenti Termini di servizio. Se non si accettano tali condizioni, si è invitati a non utilizzare il servicio.</p>
+                </section>
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">2. Nature del Servizio</h3>
+                  <p>GoSmArtic è una piattaforma di curatela e aggregazione di prodotti tecnologici. Non siamo un negozio online, non vendiamo direttamente alcun prodotto, non gestiamo transazioni, spedizioni, resi o garanzie post-vendita. Tutte le transazioni commerciali avvengono esclusivamente sulla piattaforma e sotto la responsabilità di Amazon.</p>
+                </section>
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">3. Clausola di Esclusione della Responsabilità sui Prezzi e Disponibilità</h3>
+                  <p>I prodotti, le specifiche tecniche, i prezzi e le disponibilità visualizzati sul sito rispecchiano le analisi condotte al momento della pubblicazione (anno 2026). Tuttavia, i prezzi su Amazon possono variare in tempo reale senza preavviso. GoSmArtic non è responsabile per eventuali discrepanze di preço o per l'indisponibilità di articoli sul sito di destinazione.</p>
+                </section>
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">4. Proprietà Intellettuale</h3>
+                  <p>Il marchio GoSmArtic, i loghi, la veste grafica e l'organizzazione dei contenuti sono di proprietà exclusiva della piattaforma. I marchi dei prodotti recensiti (es. Apple, Samsung, Sony, ecc.) e le relative immagini promozionali appartengono ai rispettivi proprietari e sono utilizzati a scopo puramente descrittivo e informativo.</p>
+                </section>
+                <section>
+                  <h3 className="text-lg font-bold text-gray-900 mb-2">5. Modifiche ai Termini</h3>
+                  <p>Ci riserviamo il diritto di modificare o sostituire questi Termini in qualsiasi momento. L'uso continuato del sito dopo la pubblicazione delle modifiche costituirà l'accettazione delle stesse. Per qualsiasi chiarimento legale, è possibile scrivere a <span className="font-semibold text-gray-900">info@gosmartic.com</span>.</p>
+                </section>
+              </div>
+            </div>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: FOOTER
+        // ==========================================
+        const Footer = ({ onNavigate, onSelectCategory, onContactClick }) => {
+          const handleFooterCatClick = (category) => {
+            onNavigate('home');
+            onSelectCategory(category);
+            setTimeout(() => {
+              const element = document.getElementById('tutti-i-prodotti');
+              if (element) element.scrollIntoView({ behavior: 'smooth' });
+            }, 100);
+          };
+
+          return (
+            <footer className="bg-black text-gray-400 font-sans border-t border-gray-900">
+              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+                  <div className="space-y-4">
+                    <Logo lightBg={false} />
+                    <p className="text-sm text-gray-500 max-w-sm leading-relaxed">
+                      Il tuo portale di fiducia per trovare la migliore tecnologia selezionata direttamente da Amazon. Qualità ed efficienza garantite per il 2026.
+                    </p>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold tracking-wider uppercase text-sm mb-4">Categorie</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li><button onClick={() => handleFooterCatClick('PC & Laptop')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">PC & Laptop</button></li>
+                      <li><button onClick={() => handleFooterCatClick('Telefoni')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Telefoni</button></li>
+                      <li><button onClick={() => handleFooterCatClick('Smart TV')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Smart TV</button></li>
+                      <li><button onClick={() => handleFooterCatClick('Accessori Tech')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Accessori Tech</button></li>
+                    </ul>
+                  </div>
+                  <div>
+                    <h4 className="text-white font-bold tracking-wider uppercase text-sm mb-4">Legale</h4>
+                    <ul className="space-y-2 text-sm">
+                      <li><button onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }} className="hover:text-[#06b6d4] transition-colors text-left block">Privacy Policy</button></li>
+                      <li><button onClick={(e) => { e.preventDefault(); onNavigate('termini'); }} className="hover:text-[#06b6d4] transition-colors text-left block">Termini di servizio</button></li>
+                      <li><button onClick={(e) => { e.preventDefault(); onContactClick(); }} className="hover:text-[#06b6d4] transition-colors text-left block mt-1">Contatti</button></li>
+                    </ul>
+                  </div>
+                </div>
+                <div className="border-t border-gray-900 my-8"></div>
+                <div className="text-center space-y-4">
+                  <p className="text-sm text-gray-500">&copy; 2026 GoSmArtic. Tutti i diritti riservati.</p>
+                  <p className="text-xs text-gray-600 max-w-3xl mx-auto leading-normal">
+                    Disclaimer di affiliazione: GoSmArtic partecipa al Programma Affiliazione Amazon EU. La commissione non comporta alcun costo aggiuntivo per l'utente.
+                  </p>
+                </div>
+              </div>
+            </footer>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: MODAL DE CONTACTO
+        // ==========================================
+        const ContactModal = ({ isOpen, onClose }) => {
+          const [subject, setSubject] = React.useState('');
+          const [message, setMessage] = React.useState('');
+
+          const handleSubmit = (e) => {
+            e.preventDefault();
+            const mailtoUrl = `mailto:info@gosmartic.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message)}`;
+            window.location.href = mailtoUrl;
+            onClose();
+            setSubject('');
+            setMessage('');
+          };
+
+          if (!isOpen) return null;
+
+          return (
+            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+              <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 font-sans text-gray-900">
+                <div className="flex justify-between items-center border-b border-gray-100 pb-3 mb-4">
+                  <h3 className="text-xl font-bold text-gray-900 flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-[#2563eb]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                    Contatta GoSmArtic
+                  </h3>
+                  <button onClick={onClose} className="text-gray-400 hover:text-gray-600 font-bold text-lg">&times;</button>
+                </div>
+
+                <p className="text-sm text-gray-500 mb-4">
+                  Hai domande, proposte commerciali o feedback sul sito? Inviaci un'e-mail direttamente a <strong className="text-gray-900">info@gosmartic.com</strong> o usa il modulo sottostante.
+                </p>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-gray-600 mb-1">Oggetto dell'e-mail</label>
+                    <input 
+                      type="text" 
+                      required
+                      value={subject}
+                      onChange={(e) => setSubject(e.target.value)}
+                      placeholder="Esempio: Richiesta di informazioni"
+                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-bold uppercase text-gray-600 mb-1">Messaggio</label>
+                    <textarea 
+                      rows="4"
+                      required
+                      value={message}
+                      onChange={(e) => setMessage(e.target.value)}
+                      placeholder="Scrivi qui il tuo messaggio..."
+                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+
+                  <div className="flex gap-3 pt-2">
+                    <button 
+                      type="button" 
+                      onClick={onClose}
+                      className="w-1/3 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2.5 rounded-lg text-sm font-semibold transition-colors"
+                    >
+                      Annulla
+                    </button>
+                    <button 
+                      type="submit"
+                      className="w-2/3 bg-[#2563eb] hover:bg-blue-700 text-white py-2.5 rounded-lg text-sm font-semibold transition-colors flex items-center justify-center gap-2"
+                    >
+                      <span>Invia Email</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                      </svg>
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: MODAL DE LOGIN
+        // ==========================================
+        const LoginModal = ({ isOpen, onClose, onLoginSuccess }) => {
+          const [password, setPassword] = React.useState('');
+          const [error, setError] = React.useState('');
+
+          const MASTER_PASSWORD = "admin2026"; 
+
+          const handleSubmit = (e) => {
+            e.preventDefault();
+            if (password === MASTER_PASSWORD) {
+              setError('');
+              setPassword('');
+              onLoginSuccess();
+            } else {
+              setError('❌ Password errata. Accesso negato.');
+            }
+          };
+
+          if (!isOpen) return null;
+
+          return (
+            <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 backdrop-blur-sm">
+              <div className="bg-white rounded-2xl max-w-md w-full p-6 shadow-2xl border border-gray-100 font-sans text-gray-900">
+                <div className="text-center mb-6">
+                  <div className="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                    </svg>
+                  </div>
+                  <h3 className="text-xl font-bold">Accesso Amministratore</h3>
+                  <p className="text-sm text-gray-500 mt-1">Inserisci la password master per accedere alla gestione prodotti.</p>
+                </div>
+
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  <div>
+                    <input 
+                      type="password"
+                      required
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      placeholder="Password"
+                      className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 text-center tracking-widest font-mono"
+                    />
+                  </div>
+
+                  {error && <p className="text-xs text-red-600 text-center font-medium">{error}</p>}
+
+                  <div className="flex gap-2 pt-2">
+                    <button type="button" onClick={onClose} className="w-1/2 bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 rounded-lg text-sm font-semibold transition-colors">
+                      Annulla
+                    </button>
+                    <button type="submit" className="w-1/2 bg-black hover:bg-gray-900 text-white py-2 rounded-lg text-sm font-semibold transition-colors">
+                      Entra
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE: PANEL DE ADMINISTRACIÓN
+        // ==========================================
+        const AdminPanel = ({ productos, onUpdateProducts, onBack, onResetToDefault }) => {
+          const [isEditing, setIsEditing] = React.useState(false);
+          const [currentId, setCurrentId] = React.useState(null);
+
+          const [formData, setFormData] = React.useState({
+            nombre: '',
+            categoria: 'PC & Laptop',
+            descripcionCorta: '',
+            imagenUrl: '',
+            linkAmazon: ''
+          });
+
+          const handleInputChange = (e) => {
+            const { name, value } = e.target;
+            setFormData({ ...formData, [name]: value });
+          };
+
+          const handleEditClick = (p) => {
+            setIsEditing(true);
+            setCurrentId(p.id);
+            setFormData({
+              nombre: p.nombre,
+              categoria: p.categoria,
+              descripcionCorta: p.descripcionCorta,
+              imagenUrl: p.imagenUrl,
+              linkAmazon: p.linkAmazon
+            });
+          };
+
+          const handleSubmit = (e) => {
+            e.preventDefault();
+            if (!formData.nombre || !formData.descripcionCorta) return;
+
+            if (isEditing) {
+              const updated = productos.map(p => p.id === currentId ? { ...p, ...formData } : p);
+              onUpdateProducts(updated);
+              setIsEditing(false);
+              setCurrentId(null);
+            } else {
+              const newProduct = {
+                id: Date.now(),
+                ...formData
+              };
+              onUpdateProducts([...productos, newProduct]);
+            }
+
+            setFormData({
+              nombre: '',
+              categoria: 'PC & Laptop',
+              descripcionCorta: '',
+              imagenUrl: '',
+              linkAmazon: ''
+            });
+          };
+
+          const handleCancelEdit = () => {
+            setIsEditing(false);
+            setCurrentId(null);
+            setFormData({
+              nombre: '',
+              categoria: 'PC & Laptop',
+              descripcionCorta: '',
+              imagenUrl: '',
+              linkAmazon: ''
+            });
+          };
+
+          const handleDelete = (id) => {
+            if (window.confirm("Eliminare questo prodotto?")) {
+              onUpdateProducts(productos.filter(p => p.id !== id));
+              if (currentId === id) handleCancelEdit();
+            }
+          };
+
+          const handleResetClick = () => {
+            if (window.confirm("ATTENZIONE: Questo cancellerà tutte le modifiche personalizzate e ripristinerà i prodotti iniziali di fabbrica. Continuare?")) {
+              onResetToDefault();
+              handleCancelEdit();
+            }
+          };
+
+          return (
+            <div className="max-w-6xl mx-auto px-4 py-12 font-sans">
+              <div className="flex flex-col sm:flex-row justify-between sm:items-center mb-8 pb-4 border-b border-gray-200 gap-4">
+                <div>
+                  <h1 className="text-3xl font-bold text-gray-900">Pannello di Controllo Catalogo</h1>
+                  <p className="text-sm text-gray-500">I dati sono salvati localmente sul browser. Aggiungi o modifica i prodotti.</p>
+                </div>
+                <div className="flex gap-2">
+                  <button onClick={handleResetClick} className="bg-red-50 text-red-600 border border-red-200 px-4 py-2.5 rounded-lg text-sm font-semibold hover:bg-red-100 transition-colors">
+                    Reset Fabbrica
+                  </button>
+                  <button onClick={onBack} className="bg-black text-white px-5 py-2.5 rounded-lg text-sm font-semibold hover:bg-gray-800 transition-colors">
+                    &larr; Esci dal Pannello
+                  </button>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* FORMULARIO */}
+                <div className="bg-white p-6 rounded-2xl border border-gray-200 shadow-sm h-fit">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">
+                    {isEditing ? '📝 Modifica Prodotto' : '➕ Aggiungi Nuovo Prodotto'}
+                  </h3>
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 mb-1">Nome del Prodotto</label>
+                      <input 
+                        type="text" name="nombre" required value={formData.nombre} onChange={handleInputChange}
+                        placeholder="Es. Dell 15 Laptop"
+                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 mb-1">Categoria</label>
+                      <select 
+                        name="categoria" value={formData.categoria} onChange={handleInputChange}
+                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm bg-white focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      >
+                        <option value="PC & Laptop">PC & Laptop</option>
+                        <option value="Telefoni">Telefoni</option>
+                        <option value="Smart TV">Smart TV</option>
+                        <option value="Accessori Tech">Accessori Tech</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 mb-1">Descrizione Breve</label>
+                      <textarea 
+                        name="descripcionCorta" required rows="3" value={formData.descripcionCorta} onChange={handleInputChange}
+                        placeholder="Inserisci i punti di forza del prodotto..."
+                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 mb-1">URL Immagine</label>
+                      <input 
+                        type="url" name="imagenUrl" value={formData.imagenUrl} onChange={handleInputChange}
+                        placeholder="https://images.unsplash.com/..."
+                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-xs font-bold uppercase text-gray-600 mb-1">Link Affiliazione Amazon</label>
+                      <input 
+                        type="url" name="linkAmazon" value={formData.linkAmazon} onChange={handleInputChange}
+                        placeholder="https://www.amazon.it/..."
+                        className="w-full border border-gray-300 rounded-lg p-2.5 text-sm focus:ring-2 focus:ring-blue-500 focus:outline-none"
+                      />
+                    </div>
+
+                    <div className="flex gap-2 pt-2">
+                      <button type="submit" className={`flex-grow py-2.5 rounded-lg text-sm font-semibold text-white transition-colors ${isEditing ? 'bg-amber-500 hover:bg-amber-600' : 'bg-blue-600 hover:bg-blue-700'}`}>
+                        {isEditing ? 'Salva Modifiche' : 'Salva Prodotto'}
+                      </button>
+                      {isEditing && (
+                        <button type="button" onClick={handleCancelEdit} className="bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2.5 rounded-lg text-sm font-semibold transition-colors">
+                          Annulla
+                        </button>
+                      )}
+                    </div>
+                  </form>
+                </div>
+
+                {/* TABLA DE PRODUCTOS */}
+                <div className="lg:col-span-2 bg-white rounded-2xl border border-gray-200 shadow-sm overflow-hidden">
+                  <div className="p-4 bg-gray-50 border-b border-gray-200">
+                    <h3 className="font-bold text-gray-900">Articoli in Database ({productos.length})</h3>
+                  </div>
+                  <div className="overflow-x-auto">
+                    <table className="w-full border-collapse text-left text-sm">
+                      <thead>
+                        <tr className="bg-gray-100 font-bold text-gray-600 border-b border-gray-200">
+                          <th className="p-4">Titolo</th>
+                          <th className="p-4">Categoria</th>
+                          <th className="p-4 text-right">Azioni</th>
+                        </tr>
+                      </thead>
+                      <tbody className="divide-y divide-gray-100">
+                        {productos.map(p => (
+                          <tr key={p.id} className="hover:bg-gray-50 transition-colors">
+                            <td className="p-4 font-semibold text-gray-900 max-w-[240px] truncate">{p.nombre}</td>
+                            <td className="p-4">
+                              <span className="bg-gray-100 text-gray-800 text-xs px-2.5 py-1 rounded-full font-medium">
+                                {p.categoria}
+                              </span>
+                            </td>
+                            <td className="p-4 text-right space-x-2 whitespace-nowrap">
+                              <button onClick={() => handleEditClick(p)} className="text-amber-600 hover:text-amber-800 font-bold text-xs bg-amber-50 hover:bg-amber-100 px-3 py-1.5 rounded-md transition-colors">
+                                Modifica
+                              </button>
+                              <button onClick={() => handleDelete(p.id)} className="text-red-600 hover:text-red-800 font-bold text-xs bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-md transition-colors">
+                                Disattiva
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+          );
+        };
+
+        // ==========================================
+        // COMPONENTE PRINCIPAL (APP WITH LOCALSTORAGE)
+        // ==========================================
+        const App = () => {
+          const [view, setView] = React.useState('home'); 
+          const [activeFilter, setActiveFilter] = React.useState('all');
+          const [isContactOpen, setIsContactOpen] = React.useState(false);
+          const [isLoginOpen, setIsLoginOpen] = React.useState(false);
+
+          // Cargar productos iniciales desde LocalStorage si existen, sino usar el array por defecto
+          const [productos, setProductos] = React.useState(() => {
+            const savedProducts = localStorage.getItem('gosmartic_catalog');
+            return savedProducts ? JSON.parse(savedProducts) : INITIAL_PRODUCTS;
+          });
+
+          // Cada vez que el array de productos cambie, guardarlo automáticamente en LocalStorage
+          React.useEffect(() => {
+            localStorage.setItem('gosmartic_catalog', JSON.stringify(productos));
+          }, [productos]);
+
+          // Función para resetear a los valores de fábrica
+          const resetToDefault = () => {
+            setProductos(INITIAL_PRODUCTS);
+          };
+
+          return (
+            <div className="flex flex-col min-h-screen">
+              <Header 
+                onNavigate={setView} 
+                onLogoTripleClick={() => setIsLoginOpen(true)}
+                activeFilter={activeFilter}
+                onSelectCategory={setActiveFilter}
+              />
+
+              <main className="flex-grow">
+                {view === 'home' && (
+                  <React.Fragment>
+                    <Hero data={INITIAL_HERO} />
+                    <FeaturedSection productos={productos} />
+                    <AllProductsSection 
+                      productos={productos} 
+                      activeFilter={activeFilter} 
+                      onResetFilter={() => setActiveFilter('all')} 
+                    />
+                  </React.Fragment>
+                )}
+
+                {view === 'privacy' && <PrivacyPolicyView onBack={() => setView('home')} />}
+                {view === 'termini' && <TermsOfServiceView onBack={() => setView('home')} />}
+                {view === 'admin' && (
+                  <AdminPanel 
+                    productos={productos} 
+                    onUpdateProducts={setProductos} 
+                    onBack={() => setView('home')} 
+                    onResetToDefault={resetToDefault}
+                  />
+                )}
+              </main>
+
+              <Footer 
+                onNavigate={setView} 
+                onSelectCategory={setActiveFilter} 
+                onContactClick={() => setIsContactOpen(true)} 
+              />
+
+              <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+              
+              <LoginModal 
+                isOpen={isLoginOpen} 
+                onClose={() => setIsLoginOpen(false)} 
+                onLoginSuccess={() => {
+                  setIsLoginOpen(false);
+                  setView('admin');
+                }} 
+              />
+            </div>
+          );
+        };
+
+        // Renderizar la aplicación de forma limpia en el DOM
+        ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+    </script>
+</body>
+</html>
