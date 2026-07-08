@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoSmArtic - Offerte Tech Amazon 2026</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -119,7 +119,7 @@
                   <a href="#" onClick={(e) => handleCategoryClick(e, 'Telefoni')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Telefoni' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Telefoni</a>
                   <a href="#" onClick={(e) => handleCategoryClick(e, 'Smart TV')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Smart TV' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Smart TV</a>
                   <a href="#" onClick={(e) => handleCategoryClick(e, 'Accessori Tech')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Accessori Tech' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Accessori Tech</a>
-                </nav>
+                </nav><a href="#blog" className="font-sans font-medium text-sm md:text-base text-gray-300 hover:text-[#06b6d4] px-2 py-1 rounded">Blog</a>
               </div>
             </header>
           );
@@ -458,46 +458,133 @@
         // ==========================================
         // COMPONENTE PRINCIPAL (APP LIMPIA)
         // ==========================================
-        const App = () => {
-          const [view, setView] = React.useState('home'); 
-          const [activeFilter, setActiveFilter] = React.useState('all');
-          const [isContactOpen, setIsContactOpen] = React.useState(false);
+        const BLOG_POSTS_URL = "https://raw.githubusercontent.com/Villajr130/gosmartic-offers/main/data/blog-posts.json";
 
-          return (
-            <div className="flex flex-col min-h-screen">
-              <Header 
-                onNavigate={setView} 
-                activeFilter={activeFilter}
-                onSelectCategory={setActiveFilter}
-              />
+const useBlogPosts = () => {
+  const [data, setData] = React.useState({ posts: [] });
+  React.useEffect(() => {
+    fetch(BLOG_POSTS_URL)
+      .then(res => res.json())
+      .then(setData)
+      .catch(() => setData({ posts: [] }));
+  }, []);
+  return data;
+};
 
-              <main className="flex-grow">
-                {view === 'home' && (
-                  <React.Fragment>
-                    <Hero data={INITIAL_HERO} />
-                    <FeaturedSection productos={INITIAL_PRODUCTS} />
-                    <AllProductsSection 
-                      productos={INITIAL_PRODUCTS} 
-                      activeFilter={activeFilter} 
-                      onResetFilter={() => setActiveFilter('all')} 
-                    />
-                  </React.Fragment>
-                )}
+const useHashRoute = () => {
+  const [hash, setHash] = React.useState(window.location.hash);
+  React.useEffect(() => {
+    const onHashChange = () => setHash(window.location.hash);
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
+  }, []);
+  return hash;
+};
 
-                {view === 'privacy' && <PrivacyPolicyView onBack={() => setView('home')} />}
-                {view === 'termini' && <TermsOfServiceView onBack={() => setView('home')} />}
-              </main>
-
-              <Footer 
-                onNavigate={setView} 
-                onSelectCategory={setActiveFilter} 
-                onContactClick={() => setIsContactOpen(true)} 
-              />
-
-              <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+const BlogListView = ({ posts }) => {
+  if (!posts || posts.length === 0) {
+    return (
+      <div className="max-w-5xl mx-auto px-4 py-20 text-center text-gray-400 font-sans">
+        Nessun articolo pubblicato ancora.
+      </div>
+    );
+  }
+  return (
+    <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <h1 className="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-10">Blog GoSmArtic</h1>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
+        {posts.map(post => (
+          <a key={post.id} href={`#blog/${post.slug}`} className="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+            <img src={post.imagenUrl} alt={post.titulo} className="w-full h-48 object-cover" />
+            <div className="p-5">
+              <span className="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">{post.categoria}</span>
+              <h2 className="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">{post.titulo}</h2>
+              <p className="font-sans text-sm text-gray-500 line-clamp-3">{post.resumen}</p>
+              <p className="font-sans text-xs text-gray-400 mt-3">{post.fecha}</p>
             </div>
-          );
-        };
+          </a>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+const BlogPostView = ({ post }) => {
+  if (!post) {
+    return (
+      <div className="max-w-3xl mx-auto px-4 py-20 text-center font-sans text-gray-500">
+        Articolo non trovato. <a href="#blog" className="text-[#2563eb] font-bold">Torna al blog</a>
+      </div>
+    );
+  }
+  return (
+    <article className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 font-sans">
+      <a href="#blog" className="inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline mb-6">&larr; Torna al blog</a>
+      <span className="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-2 block">{post.categoria}</span>
+      <h1 className="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">{post.titulo}</h1>
+      <p className="text-xs text-gray-400 mb-8">{post.fecha}{post.autor ? ` · ${post.autor}` : ''}</p>
+      {post.imagenUrl && (
+        <img src={post.imagenUrl} alt={post.titulo} className="w-full rounded-xl mb-8 object-cover max-h-96" />
+      )}
+      <div className="prose prose-sm sm:prose-base max-w-none text-gray-800" dangerouslySetInnerHTML={{ __html: post.contenido_html }} />
+    </article>
+  );
+};
+
+const App = () => {
+  const [view, setView] = React.useState('home');
+  const [activeFilter, setActiveFilter] = React.useState('all');
+  const [isContactOpen, setIsContactOpen] = React.useState(false);
+  const blogData = useBlogPosts();
+  const hash = useHashRoute();
+
+  const blogSlugMatch = hash.match(/^#blog\/(.+)$/);
+  const blogSlug = blogSlugMatch ? decodeURIComponent(blogSlugMatch[1]) : null;
+  const isBlogList = hash === '#blog';
+
+  React.useEffect(() => { if (hash.startsWith('#blog')) window.scrollTo(0, 0); }, [hash]);
+
+  let mainContent;
+  if (blogSlug) {
+    const post = (blogData.posts || []).find(p => p.slug === blogSlug);
+    mainContent = <BlogPostView post={post} />;
+  } else if (isBlogList) {
+    mainContent = <BlogListView posts={blogData.posts || []} />;
+  } else if (view === 'privacy') {
+    mainContent = <PrivacyPolicyView onBack={() => setView('home')} />;
+  } else if (view === 'termini') {
+    mainContent = <TermsOfServiceView onBack={() => setView('home')} />;
+  } else {
+    mainContent = (
+      <React.Fragment>
+        <Hero data={INITIAL_HERO} />
+        <FeaturedSection productos={INITIAL_PRODUCTS} />
+        <AllProductsSection 
+          productos={INITIAL_PRODUCTS} 
+          activeFilter={activeFilter} 
+          onResetFilter={() => setActiveFilter('all')} 
+        />
+      </React.Fragment>
+    );
+  }
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header 
+        onNavigate={setView} 
+        activeFilter={activeFilter}
+        onSelectCategory={setActiveFilter}
+      />
+      <main className="flex-grow">{mainContent}</main>
+      <Footer 
+        onNavigate={setView} 
+        onSelectCategory={setActiveFilter} 
+        onContactClick={() => setIsContactOpen(true)} 
+      />
+      <ContactModal isOpen={isContactOpen} onClose={() => setIsContactOpen(false)} />
+    </div>
+  );
+};
 
         // Renderizar la aplicación en el DOM
         ReactDOM.createRoot(document.getElementById('root')).render(<App />);
