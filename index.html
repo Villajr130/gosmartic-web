@@ -477,10 +477,13 @@ const Footer = ({ onNavigate, onSelectCategory, onContactClick }) => {
 const useBlogPosts = () => {
   const [data, setData] = React.useState({ posts: [] });
   React.useEffect(() => {
-    fetch(BLOG_POSTS_URL)
+    fetch(BLOG_POSTS_URL, { cache: 'no-store' })
       .then(res => res.json())
       .then(setData)
-      .catch(() => setData({ posts: [] }));
+      .catch(err => {
+        console.error('Error cargando blog-posts.json:', err);
+        setData({ posts: [] });
+      });
   }, []);
   return data;
 };
