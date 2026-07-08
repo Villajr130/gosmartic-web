@@ -350,55 +350,62 @@ const Header = ({ onNavigate, activeFilter, onSelectCategory }) => {
         // ==========================================
         // COMPONENTE: FOOTER
         // ==========================================
-        const Footer = ({ onNavigate, onSelectCategory, onContactClick }) => {
-          const handleFooterCatClick = (category) => {
-            onNavigate('home');
-            onSelectCategory(category);
-            setTimeout(() => {
-              const element = document.getElementById('tutti-i-prodotti');
-              if (element) element.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          };
+const Footer = ({ onNavigate, onSelectCategory, onContactClick }) => {
+  const handleFooterCatClick = (category) => {
+    window.location.hash = '';
+    onNavigate('home');
+    onSelectCategory(category);
+    setTimeout(() => {
+      const element = document.getElementById('tutti-i-prodotti');
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
 
-          return (
-            <footer className="bg-black text-gray-400 font-sans border-t border-gray-900">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
-                  <div className="space-y-4">
-                    <Logo lightBg={false} />
-                    <p className="text-sm text-gray-500 max-w-sm leading-relaxed">
-                      Il tuo portale di fiducia per trovare la migliore tecnologia selezionata direttamente da Amazon. Qualità ed efficienza garantite per il 2026.
-                    </p>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold tracking-wider uppercase text-sm mb-4">Categorie</h4>
-                    <ul className="space-y-2 text-sm">
-                      <li><button onClick={() => handleFooterCatClick('PC & Laptop')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">PC & Laptop</button></li>
-                      <li><button onClick={() => handleFooterCatClick('Telefoni')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Telefoni</button></li>
-                      <li><button onClick={() => handleFooterCatClick('Smart TV')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Smart TV</button></li>
-                      <li><button onClick={() => handleFooterCatClick('Accessori Tech')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Accessori Tech</button></li>
-                    </ul>
-                  </div>
-                  <div>
-                    <h4 className="text-white font-bold tracking-wider uppercase text-sm mb-4">Legale</h4>
-                    <ul className="space-y-2 text-sm">
-                      <li><button onClick={(e) => { e.preventDefault(); onNavigate('privacy'); }} className="hover:text-[#06b6d4] transition-colors text-left block">Privacy Policy</button></li>
-                      <li><button onClick={(e) => { e.preventDefault(); onNavigate('termini'); }} className="hover:text-[#06b6d4] transition-colors text-left block">Termini di servizio</button></li>
-                      <li><button onClick={(e) => { e.preventDefault(); onContactClick(); }} className="hover:text-[#06b6d4] transition-colors text-left block mt-1">Contatti</button></li>
-                    </ul>
-                  </div>
-                </div>
-                <div className="border-t border-gray-900 my-8"></div>
-                <div className="text-center space-y-4">
-                  <p className="text-sm text-gray-500">&copy; 2026 GoSmArtic. Tutti i diritti riservati.</p>
-                  <p className="text-xs text-gray-600 max-w-3xl mx-auto leading-normal">
-                    Disclaimer di affiliazione: GoSmArtic partecipa al Programma Affiliazione Amazon EU. La commissione non comporta alcun costo aggiuntivo per l'utente.
-                  </p>
-                </div>
-              </div>
-            </footer>
-          );
-        };
+  const handleLegalClick = (view) => {
+    window.location.hash = '';
+    onNavigate(view);
+  };
+
+  return (
+    <footer className="bg-black text-gray-400 font-sans border-t border-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+          <div className="space-y-4">
+            <Logo lightBg={false} />
+            <p className="text-sm text-gray-500 max-w-sm leading-relaxed">
+              Il tuo portale di fiducia per trovare la migliore tecnologia selezionata direttamente da Amazon. Qualità ed efficienza garantite per il 2026.
+            </p>
+          </div>
+          <div>
+            <h4 className="text-white font-bold tracking-wider uppercase text-sm mb-4">Categorie</h4>
+            <ul className="space-y-2 text-sm">
+              <li><button onClick={() => handleFooterCatClick('PC & Laptop')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">PC & Laptop</button></li>
+              <li><button onClick={() => handleFooterCatClick('Telefoni')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Telefoni</button></li>
+              <li><button onClick={() => handleFooterCatClick('Smart TV')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Smart TV</button></li>
+              <li><button onClick={() => handleFooterCatClick('Accessori Tech')} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Accessori Tech</button></li>
+              <li><button onClick={() => { window.location.hash = 'blog'; }} className="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Blog</button></li>
+            </ul>
+          </div>
+          <div>
+            <h4 className="text-white font-bold tracking-wider uppercase text-sm mb-4">Legale</h4>
+            <ul className="space-y-2 text-sm">
+              <li><button onClick={() => handleLegalClick('privacy')} className="hover:text-[#06b6d4] transition-colors text-left block">Privacy Policy</button></li>
+              <li><button onClick={() => handleLegalClick('termini')} className="hover:text-[#06b6d4] transition-colors text-left block">Termini di servizio</button></li>
+              <li><button onClick={(e) => { e.preventDefault(); onContactClick(); }} className="hover:text-[#06b6d4] transition-colors text-left block mt-1">Contatti</button></li>
+            </ul>
+          </div>
+        </div>
+        <div className="border-t border-gray-900 my-8"></div>
+        <div className="text-center space-y-4">
+          <p className="text-sm text-gray-500">&copy; 2026 GoSmArtic. Tutti i diritti riservati.</p>
+          <p className="text-xs text-gray-600 max-w-3xl mx-auto leading-normal">
+            Disclaimer di affiliazione: GoSmArtic partecipa al Programma Affiliazione Amazon EU. La commissione non comporta alcun costo aggiuntivo per l'utente.
+          </p>
+        </div>
+      </div>
+    </footer>
+  );
+};
 
         // ==========================================
         // COMPONENTE: MODAL DE CONTACTO
