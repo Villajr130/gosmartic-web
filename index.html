@@ -95,35 +95,42 @@
         // ==========================================
         // COMPONENTE: HEADER (ADAPTADO PARA MÓVILES)
         // ==========================================
-        const Header = ({ onNavigate, activeFilter, onSelectCategory }) => {
-          const handleCategoryClick = (e, category) => {
-            e.preventDefault();
-            onNavigate('home');
-            onSelectCategory(category);
-            
-            setTimeout(() => {
-              const element = document.getElementById('tutti-i-prodotti');
-              if (element) element.scrollIntoView({ behavior: 'smooth' });
-            }, 100);
-          };
+const Header = ({ onNavigate, activeFilter, onSelectCategory }) => {
+  const goHome = () => {
+    window.location.hash = '';
+    onNavigate('home');
+    onSelectCategory('all');
+  };
 
-          return (
-            <header className="bg-black border-b border-gray-900 sticky top-0 z-50">
-              <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-auto min-h-[80px] py-4 flex flex-col md:flex-row items-center justify-between gap-4">
-                <div className="cursor-pointer flex-shrink-0" onClick={() => onNavigate('home')}>
-                  <Logo lightBg={false} />
-                </div>
-                <nav className="flex items-center space-x-2 md:space-x-6 max-w-full overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap pb-2 md:pb-0 px-2">
-                  <a href="#" onClick={(e) => { e.preventDefault(); onNavigate('home'); onSelectCategory('all'); }} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'all' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>In Evidenza</a>
-                  <a href="#" onClick={(e) => handleCategoryClick(e, 'PC & Laptop')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'PC & Laptop' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>PC & Laptop</a>
-                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Telefoni')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Telefoni' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Telefoni</a>
-                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Smart TV')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Smart TV' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Smart TV</a>
-                  <a href="#" onClick={(e) => handleCategoryClick(e, 'Accessori Tech')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Accessori Tech' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Accessori Tech</a>
-                </nav><a href="#blog" className="font-sans font-medium text-sm md:text-base text-gray-300 hover:text-[#06b6d4] px-2 py-1 rounded">Blog</a>
-              </div>
-            </header>
-          );
-        };
+  const handleCategoryClick = (e, category) => {
+    e.preventDefault();
+    window.location.hash = '';
+    onNavigate('home');
+    onSelectCategory(category);
+    setTimeout(() => {
+      const element = document.getElementById('tutti-i-prodotti');
+      if (element) element.scrollIntoView({ behavior: 'smooth' });
+    }, 100);
+  };
+
+  return (
+    <header className="bg-black border-b border-gray-900 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-auto min-h-[80px] py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="cursor-pointer flex-shrink-0" onClick={goHome}>
+          <Logo lightBg={false} />
+        </div>
+        <nav className="flex items-center space-x-2 md:space-x-6 max-w-full overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap pb-2 md:pb-0 px-2">
+          <a href="#" onClick={(e) => { e.preventDefault(); goHome(); }} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'all' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>In Evidenza</a>
+          <a href="#" onClick={(e) => handleCategoryClick(e, 'PC & Laptop')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'PC & Laptop' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>PC & Laptop</a>
+          <a href="#" onClick={(e) => handleCategoryClick(e, 'Telefoni')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Telefoni' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Telefoni</a>
+          <a href="#" onClick={(e) => handleCategoryClick(e, 'Smart TV')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Smart TV' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Smart TV</a>
+          <a href="#" onClick={(e) => handleCategoryClick(e, 'Accessori Tech')} className={`font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded ${activeFilter === 'Accessori Tech' ? 'text-[#06b6d4]' : 'text-gray-300 hover:text-[#06b6d4]'}`}>Accessori Tech</a>
+          <a href="#blog" className="font-sans font-medium text-sm md:text-base text-gray-300 hover:text-[#06b6d4] px-2 py-1 rounded">Blog</a>
+        </nav>
+      </div>
+    </header>
+  );
+};
 
         // ==========================================
         // COMPONENTE: HERO SECTION
