@@ -206,7 +206,7 @@ const ProductCard = ({ producto, offers }) => {
         </p>
         <div className="h-6 w-full my-2"></div>
         
-          href={producto.linkAmazon}
+          <a href={producto.linkAmazon}
           target="_blank"
           rel="noopener noreferrer"
           className="w-full flex items-center justify-center gap-2 font-sans font-bold bg-[#2563eb] text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 mt-auto"
@@ -231,7 +231,6 @@ const ProductGrid = ({ productos, offers }) => (
     ))}
   </div>
 );
-        };
 
         // ==========================================
         // COMPONENTE: SECCIONES HOME
