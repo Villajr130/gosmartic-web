@@ -486,7 +486,18 @@ const useBlogPosts = () => {
   }, []);
   return data;
 };
+const OFFERS_URL = "https://cdn.jsdelivr.net/gh/Villajr130/gosmartic-offers@main/data/offers.json";
 
+const useOffers = () => {
+  const [offers, setOffers] = React.useState({});
+  React.useEffect(() => {
+    fetch(OFFERS_URL, { cache: 'no-store' })
+      .then(res => res.json())
+      .then(setOffers)
+      .catch(() => setOffers({}));
+  }, []);
+  return offers;
+};
 const useHashRoute = () => {
   const [hash, setHash] = React.useState(window.location.hash);
   React.useEffect(() => {
