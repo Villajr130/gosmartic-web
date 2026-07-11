@@ -5,6 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>GoSmArtic - Offerte Tech Amazon 2026</title>
     <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+<script>
+  window.OneSignalDeferred = window.OneSignalDeferred || [];
+  OneSignalDeferred.push(async function(OneSignal) {
+    await OneSignal.init({ appId: "c97cc58d-ce41-48b8-b7ef-0e8ba3df6ad5" });
+  });
+</script>
     <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -503,7 +510,33 @@ const useHashRoute = () => {
   }, []);
   return hash;
 };
+const NotificationButton = () => {
+  const [isSubscribed, setIsSubscribed] = React.useState(false);
 
+  React.useEffect(() => {
+    if (window.OneSignalDeferred) {
+      window.OneSignalDeferred.push(async (OneSignal) => {
+        setIsSubscribed(!!OneSignal.User.PushSubscription.optedIn);
+      });
+    }
+  }, []);
+
+  const handleSubscribe = () => {
+    window.OneSignalDeferred.push(async (OneSignal) => {
+      await OneSignal.User.PushSubscription.optIn();
+      setIsSubscribed(true);
+    });
+  };
+
+  if (isSubscribed) {
+    return <span className="text-sm text-green-600 font-sans font-bold">✓ Notifiche attive</span>;
+  }
+  return (
+    <button onClick={handleSubscribe} className="inline-flex items-center gap-2 font-sans font-bold text-sm bg-[#2563eb] text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 transition-colors">
+      🔔 Attiva notifiche push
+    </button>
+  );
+};
 const BlogListView = ({ posts }) => {
   if (!posts || posts.length === 0) {
     return (
@@ -514,7 +547,10 @@ const BlogListView = ({ posts }) => {
   }
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <h1 className="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-10">Blog GoSmArtic</h1>
+      <h1 className="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">Blog GoSmArtic</h1>
+<div className="mb-10">
+  <NotificationButton />
+</div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {posts.map(post => (
           <a key={post.id} href={`#blog/${post.slug}`} className="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
