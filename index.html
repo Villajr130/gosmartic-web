@@ -537,6 +537,18 @@ const NotificationButton = () => {
     </button>
   );
 };
+const WhatsAppChannelButton = () => {
+  return (
+    <a
+      href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 font-sans font-bold text-sm bg-[#25D366] text-white px-4 py-2.5 rounded-lg hover:bg-[#1DA851] transition-colors"
+    >
+      💬 Segui il canale WhatsApp
+    </a>
+  );
+};
 const BlogListView = ({ posts }) => {
   if (!posts || posts.length === 0) {
     return (
@@ -551,6 +563,7 @@ const BlogListView = ({ posts }) => {
 <p className="font-sans text-sm text-gray-500 mb-4">Ricevi un avviso ogni volta che pubblichiamo un nuovo articolo.</p>
 <div className="flex flex-col sm:flex-row gap-4 mb-12 bg-gray-50 border border-gray-100 rounded-xl p-5">
   <NotificationButton />
+  <WhatsAppChannelButton />
   <NewsletterForm />
 </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
