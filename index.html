@@ -466,12 +466,54 @@ const Footer = ({ onNavigate, onSelectCategory, onContactClick }) => {
         // ==========================================
         // COMPONENTE PRINCIPAL (APP LIMPIA)
         // ==========================================
-        const BLOG_POSTS_URL = "https://cdn.jsdelivr.net/gh/Villajr130/gosmartic-offers@main/data/blog-posts.json";
+        const OFFERS_REPO = "Villajr130/gosmartic-offers";
+        const OFFERS_SHA_CACHE_KEY = "gosmartic_offers_sha";
+        const OFFERS_SHA_CACHE_TTL_MS = 5 * 60 * 1000;
+
+        let offersShaPromise = null;
+
+        const getOffersRepoSha = () => {
+          if (offersShaPromise) return offersShaPromise;
+
+          try {
+            const cached = sessionStorage.getItem(OFFERS_SHA_CACHE_KEY);
+            if (cached) {
+              const { sha, ts } = JSON.parse(cached);
+              if (sha && Date.now() - ts < OFFERS_SHA_CACHE_TTL_MS) {
+                offersShaPromise = Promise.resolve(sha);
+                return offersShaPromise;
+              }
+            }
+          } catch (e) {}
+
+          offersShaPromise = fetch(`https://api.github.com/repos/${OFFERS_REPO}/commits/main`)
+            .then(res => {
+              if (!res.ok) throw new Error('GitHub API respondió ' + res.status);
+              return res.json();
+            })
+            .then(data => {
+              const sha = data.sha;
+              try {
+                sessionStorage.setItem(OFFERS_SHA_CACHE_KEY, JSON.stringify({ sha, ts: Date.now() }));
+              } catch (e) {}
+              return sha;
+            });
+
+          return offersShaPromise;
+        };
+
+        const buildOffersRepoUrl = (sha, path) =>
+          `https://cdn.jsdelivr.net/gh/${OFFERS_REPO}@${sha || 'main'}/${path}`;
 
 const useBlogPosts = () => {
   const [data, setData] = React.useState({ posts: [] });
   React.useEffect(() => {
-    fetch(BLOG_POSTS_URL, { cache: 'no-store' })
+    getOffersRepoSha()
+      .catch(err => {
+        console.error('No se pudo obtener el SHA de gosmartic-offers, usando @main:', err);
+        return null;
+      })
+      .then(sha => fetch(buildOffersRepoUrl(sha, 'data/blog-posts.json'), { cache: 'no-store' }))
       .then(res => res.json())
       .then(setData)
       .catch(err => {
@@ -481,12 +523,16 @@ const useBlogPosts = () => {
   }, []);
   return data;
 };
-const OFFERS_URL = "https://cdn.jsdelivr.net/gh/Villajr130/gosmartic-offers@main/data/offers.json";
 
 const useOffers = () => {
   const [offers, setOffers] = React.useState({});
   React.useEffect(() => {
-    fetch(OFFERS_URL, { cache: 'no-store' })
+    getOffersRepoSha()
+      .catch(err => {
+        console.error('No se pudo obtener el SHA de gosmartic-offers, usando @main:', err);
+        return null;
+      })
+      .then(sha => fetch(buildOffersRepoUrl(sha, 'data/offers.json'), { cache: 'no-store' }))
       .then(res => res.json())
       .then(setOffers)
       .catch(() => setOffers({}));
