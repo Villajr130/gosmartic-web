@@ -229,8 +229,21 @@ const ProductGrid = ({ productos, offers }) => (
         // ==========================================
         // COMPONENTE: SECCIONES HOME
         // ==========================================
+const FEATURED_CATEGORY_ORDER = ["Telefoni", "Smart TV", "PC & Laptop", "Accessori Tech"];
+
+const getFeaturedProducts = (productos, offers) => {
+  return FEATURED_CATEGORY_ORDER
+    .map((categoria) => {
+      const onSaleInCategory = productos
+        .filter((p) => p.categoria === categoria && offers[p.id]?.is_on_sale)
+        .sort((a, b) => offers[b.id].discount_percentage - offers[a.id].discount_percentage);
+      return onSaleInCategory[0] || null;
+    })
+    .filter(Boolean);
+};
+
 const FeaturedSection = ({ productos, offers }) => {
-  const featuredProducts = productos.slice(0, 4);
+  const featuredProducts = getFeaturedProducts(productos, offers);
   return (
     <section id="in-evidenza" className="bg-gray-50 py-16 border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
