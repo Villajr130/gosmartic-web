@@ -158,17 +158,17 @@ function renderListBody(posts) {
       </div>`;
 }
 
-function renderPage({ title, description, canonicalUrl, ogImage, publishedTime, bodyHtml }) {
+function renderPage({ title, ogTitle, description, canonicalUrl, ogImage, publishedTime, bodyHtml }) {
   const ogTags = `
     <meta property="og:type" content="${publishedTime ? 'article' : 'website'}">
     <meta property="og:site_name" content="GoSmArtic">
-    <meta property="og:title" content="${escapeHtml(title)}">
+    <meta property="og:title" content="${escapeHtml(ogTitle)}">
     <meta property="og:description" content="${escapeHtml(description)}">
     <meta property="og:url" content="${canonicalUrl}">${ogImage ? `
     <meta property="og:image" content="${escapeHtml(ogImage)}">` : ''}${publishedTime ? `
     <meta property="article:published_time" content="${escapeHtml(publishedTime)}">` : ''}
     <meta name="twitter:card" content="${ogImage ? 'summary_large_image' : 'summary'}">
-    <meta name="twitter:title" content="${escapeHtml(title)}">
+    <meta name="twitter:title" content="${escapeHtml(ogTitle)}">
     <meta name="twitter:description" content="${escapeHtml(description)}">${ogImage ? `
     <meta name="twitter:image" content="${escapeHtml(ogImage)}">` : ''}`;
 
@@ -237,6 +237,7 @@ async function main() {
     fs.mkdirSync(dir, { recursive: true });
     const html = renderPage({
       title: `${post.titulo} | GoSmArtic`,
+      ogTitle: post.titulo,
       description: post.resumen,
       canonicalUrl: `${SITE_URL}/blog/${post.slug}/`,
       ogImage: post.imagenUrl,
@@ -246,9 +247,10 @@ async function main() {
     fs.writeFileSync(path.join(dir, 'index.html'), html);
   }
 
-  const sortedByDate = [...posts].sort((a, b) => (a.fecha < b.fecha ? 1 : -1));
+  const sortedByDate = [...posts].sort((a, b) => (a.fecha < b.fecha ? 1 : a.fecha > b.fecha ? -1 : 0));
   const listHtml = renderPage({
     title: 'Blog GoSmArtic | Guide e novità tech',
+    ogTitle: 'Blog GoSmArtic',
     description: 'Guide pratiche, novità e approfondimenti sul mondo tech: smartphone, laptop, Smart TV e accessori.',
     canonicalUrl: `${SITE_URL}/blog/`,
     ogImage: null,
