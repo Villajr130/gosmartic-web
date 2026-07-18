@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog GoSmArtic | Guide e novità tech</title>
+    <meta name="description" content="Guide pratiche, novità e approfondimenti sul mondo tech: smartphone, laptop, Smart TV e accessori.">
+    <link rel="canonical" href="https://gosmartic.com/blog/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GoSmArtic">
+    <meta property="og:title" content="Blog GoSmArtic | Guide e novità tech">
+    <meta property="og:description" content="Guide pratiche, novità e approfondimenti sul mondo tech: smartphone, laptop, Smart TV e accessori.">
+    <meta property="og:url" content="https://gosmartic.com/blog/">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Blog GoSmArtic | Guide e novità tech">
+    <meta name="twitter:description" content="Guide pratiche, novità e approfondimenti sul mondo tech: smartphone, laptop, Smart TV e accessori.">
+
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+    <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
+    <script>
+      window.OneSignalDeferred = window.OneSignalDeferred || [];
+      OneSignalDeferred.push(async function(OneSignal) {
+        await OneSignal.init({ appId: "c97cc58d-ce41-48b8-b7ef-0e8ba3df6ad5" });
+      });
+    </script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body class="bg-gray-50 antialiased">
+
+    <div id="root"><div class="flex flex-col min-h-screen">
+      <header class="bg-black border-b border-gray-900 sticky top-0 z-50">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-auto min-h-[80px] py-4 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div class="cursor-pointer flex-shrink-0">
+          <div class="flex items-center space-x-2 select-none">
+        <div class="relative w-9 h-9 bg-[#2563eb] rounded-full flex items-center justify-center shadow-md">
+          <span class="text-white font-sans font-bold text-lg">G</span>
+          <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#06b6d4] rounded-full ring-1 ring-black"></span>
+        </div>
+        <span class="font-sans font-bold text-xl tracking-tight text-white">
+          Go<span class="text-[#06b6d4]">Sm</span>Ar<span class="text-[#06b6d4]">tic</span>
+        </span>
+      </div>
+        </div>
+        <nav class="flex items-center space-x-2 md:space-x-6 max-w-full overflow-x-auto no-scrollbar scroll-smooth whitespace-nowrap pb-2 md:pb-0 px-2">
+          <a href="/" class="font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded text-[#06b6d4]">In Evidenza</a>
+          <a href="/" class="font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded text-gray-300 hover:text-[#06b6d4]">PC &amp; Laptop</a>
+          <a href="/" class="font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded text-gray-300 hover:text-[#06b6d4]">Telefoni</a>
+          <a href="/" class="font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded text-gray-300 hover:text-[#06b6d4]">Smart TV</a>
+          <a href="/" class="font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded text-gray-300 hover:text-[#06b6d4]">Accessori Tech</a>
+          <a href="/blog/" class="font-sans font-medium text-sm md:text-base text-gray-300 hover:text-[#06b6d4] px-2 py-1 rounded">Blog</a>
+        </nav>
+      </div>
+    </header>
+      <main class="flex-grow">
+      <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <h1 class="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">Blog GoSmArtic</h1>
+        <p class="font-sans text-sm text-gray-500 mb-4">Ricevi un avviso ogni volta che pubblichiamo un nuovo articolo.</p>
+        <div class="flex flex-col sm:flex-row gap-4 mb-12 bg-gray-50 border border-gray-100 rounded-xl p-5">
+          <button class="inline-flex items-center gap-2 font-sans font-bold text-sm bg-[#2563eb] text-white px-4 py-2.5 rounded-lg hover:bg-blue-700 transition-colors">🔔 Attiva notifiche push</button>
+          <a href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 font-sans font-bold text-sm bg-[#25D366] text-white px-4 py-2.5 rounded-lg hover:bg-[#1DA851] transition-colors">💬 Segui il canale WhatsApp</a>
+          <form action="https://buttondown.email/api/emails/embed-subscribe/villa" method="post" target="popupwindow" class="flex flex-col sm:flex-row gap-2">
+        <input type="email" name="email" required placeholder="La tua email" class="flex-grow border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+        <button type="submit" class="font-sans font-bold text-sm bg-gray-900 text-white px-4 py-2.5 rounded-lg hover:bg-gray-800 transition-colors whitespace-nowrap">✉️ Iscriviti via email</button>
+      </form>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <a href="/blog/offerte-lampo-canale-whatsapp-gosmartic/" class="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1611746872915-64382b5c76da?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Le offerte lampo che non troverai sul sito: unisciti al canale WhatsApp" class="w-full h-48 object-cover">
+            <div class="p-5">
+              <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">Accessori Tech</span>
+              <h2 class="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">Le offerte lampo che non troverai sul sito: unisciti al canale WhatsApp</h2>
+              <p class="font-sans text-sm text-gray-500 line-clamp-3">Su GoSmArtic selezioniamo i migliori prodotti tech, ma le offerte più aggressive e a tempo limitato le condividiamo solo sul nostro canale WhatsApp. Ecco perché vale la pena unirsi.</p>
+              <p class="font-sans text-xs text-gray-400 mt-3">2026-07-13</p>
+            </div>
+          </a>
+          <a href="/blog/come-scegliere-uno-smartphone-guida-completa/" class="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Come scegliere uno smartphone: guida completa all'acquisto" class="w-full h-48 object-cover">
+            <div class="p-5">
+              <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">Telefoni</span>
+              <h2 class="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">Come scegliere uno smartphone: guida completa all'acquisto</h2>
+              <p class="font-sans text-sm text-gray-500 line-clamp-3">Processore, fotocamera, batteria e sistema operativo: ecco come orientarsi tra le decine di modelli disponibili senza pagare per specifiche che non userai mai.</p>
+              <p class="font-sans text-xs text-gray-400 mt-3">2026-07-12</p>
+            </div>
+          </a>
+          <a href="/blog/i-5-migliori-tipi-di-laptop-per-studenti/" class="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1517430816045-df4b7de11d1d?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="I 5 migliori PC portatili per studenti: quale scegliere in base al tuo percorso" class="w-full h-48 object-cover">
+            <div class="p-5">
+              <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">PC &amp; Laptop</span>
+              <h2 class="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">I 5 migliori PC portatili per studenti: quale scegliere in base al tuo percorso</h2>
+              <p class="font-sans text-sm text-gray-500 line-clamp-3">Non tutti gli studenti hanno le stesse esigenze: ecco 5 profili di laptop pensati per ogni tipo di percorso universitario o scolastico.</p>
+              <p class="font-sans text-xs text-gray-400 mt-3">2026-07-09</p>
+            </div>
+          </a>
+          <a href="/blog/come-scegliere-una-smart-tv/" class="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1593305841991-05c297ba4575?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Come scegliere una Smart TV: guida completa all'acquisto" class="w-full h-48 object-cover">
+            <div class="p-5">
+              <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">Smart TV</span>
+              <h2 class="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">Come scegliere una Smart TV: guida completa all'acquisto</h2>
+              <p class="font-sans text-sm text-gray-500 line-clamp-3">Pollici, risoluzione, tipo di pannello e piattaforma smart: ecco tutti i fattori da valutare prima di comprare una nuova Smart TV.</p>
+              <p class="font-sans text-xs text-gray-400 mt-3">2026-07-09</p>
+            </div>
+          </a>
+          <a href="/blog/5-accessori-tech-indispensabili-2026/" class="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1625961332771-3f40b0e2bdcf?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="5 accessori tech indispensabili da avere sempre con te nel 2026" class="w-full h-48 object-cover">
+            <div class="p-5">
+              <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">Accessori Tech</span>
+              <h2 class="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">5 accessori tech indispensabili da avere sempre con te nel 2026</h2>
+              <p class="font-sans text-sm text-gray-500 line-clamp-3">Dai power bank agli smart tag tracker: ecco gli accessori tecnologici che semplificano davvero la vita quotidiana.</p>
+              <p class="font-sans text-xs text-gray-400 mt-3">2026-07-09</p>
+            </div>
+          </a>
+          <a href="/blog/come-scegliere-il-laptop-giusto-2026/" class="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Come scegliere il laptop giusto nel 2026: guida pratica all'acquisto" class="w-full h-48 object-cover">
+            <div class="p-5">
+              <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">PC &amp; Laptop</span>
+              <h2 class="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">Come scegliere il laptop giusto nel 2026: guida pratica all'acquisto</h2>
+              <p class="font-sans text-sm text-gray-500 line-clamp-3">Processore, RAM, storage, schermo e autonomia: ecco i criteri essenziali per non sbagliare l'acquisto del tuo prossimo laptop.</p>
+              <p class="font-sans text-xs text-gray-400 mt-3">2026-07-08</p>
+            </div>
+          </a>
+          <a href="/blog/google-pixel-11-data-presentazione-ufficiale/" class="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
+            <img src="https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Google Pixel 11: è ufficiale la data di presentazione" class="w-full h-48 object-cover">
+            <div class="p-5">
+              <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">Telefoni</span>
+              <h2 class="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">Google Pixel 11: è ufficiale la data di presentazione</h2>
+              <p class="font-sans text-sm text-gray-500 line-clamp-3">Google ha confermato che il nuovo Made by Google si terrà il 12 agosto 2026 a New York. Ecco cosa sappiamo per certo e cosa resta ancora voce di corridoio.</p>
+              <p class="font-sans text-xs text-gray-400 mt-3">2026-07-08</p>
+            </div>
+          </a>
+        </div>
+      </div>
+      </main>
+      <footer class="bg-black text-gray-400 font-sans border-t border-gray-900">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
+          <div class="space-y-4">
+            <div class="flex items-center space-x-2 select-none">
+        <div class="relative w-9 h-9 bg-[#2563eb] rounded-full flex items-center justify-center shadow-md">
+          <span class="text-white font-sans font-bold text-lg">G</span>
+          <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#06b6d4] rounded-full ring-1 ring-black"></span>
+        </div>
+        <span class="font-sans font-bold text-xl tracking-tight text-white">
+          Go<span class="text-[#06b6d4]">Sm</span>Ar<span class="text-[#06b6d4]">tic</span>
+        </span>
+      </div>
+            <p class="text-sm text-gray-500 max-w-sm leading-relaxed">
+              Il tuo portale di fiducia per trovare la migliore tecnologia selezionata direttamente da Amazon. Qualità ed efficienza garantite per il 2026.
+            </p>
+          </div>
+          <div>
+            <h4 class="text-white font-bold tracking-wider uppercase text-sm mb-4">Categorie</h4>
+            <ul class="space-y-2 text-sm">
+              <li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">PC & Laptop</button></li>
+              <li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Telefoni</button></li>
+              <li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Smart TV</button></li>
+              <li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Accessori Tech</button></li>
+              <li><a href="/blog/" class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Blog</a></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="text-white font-bold tracking-wider uppercase text-sm mb-4">Legale</h4>
+            <ul class="space-y-2 text-sm">
+              <li><button class="hover:text-[#06b6d4] transition-colors text-left block">Privacy Policy</button></li>
+              <li><button class="hover:text-[#06b6d4] transition-colors text-left block">Termini di servizio</button></li>
+              <li><button class="hover:text-[#06b6d4] transition-colors text-left block mt-1">Contatti</button></li>
+            </ul>
+          </div>
+        </div>
+        <div class="border-t border-gray-900 my-8"></div>
+        <div class="text-center space-y-4">
+          <p class="text-sm text-gray-500">&copy; 2026 GoSmArtic. Tutti i diritti riservati.</p>
+          <p class="text-xs text-gray-600 max-w-3xl mx-auto leading-normal">
+            Disclaimer di affiliazione: GoSmArtic partecipa al Programma Affiliazione Amazon EU. La commissione non comporta alcun costo aggiuntivo per l'utente.
+          </p>
+        </div>
+      </div>
+    </footer>
+    </div></div>
+
+    <script type="text/babel" src="/app.js"></script>
+
+</body>
+</html>
