@@ -36,6 +36,8 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
+const CATEGORY_LABELS = ['PC & Laptop', 'Telefoni', 'Smart TV', 'Accessori Tech'];
+
 function renderLogo() {
   return `<div class="flex items-center space-x-2 select-none">
         <div class="relative w-9 h-9 bg-[#2563eb] rounded-full flex items-center justify-center shadow-md">
@@ -49,7 +51,7 @@ function renderLogo() {
 }
 
 function renderHeader() {
-  const categoryLinks = ['PC & Laptop', 'Telefoni', 'Smart TV', 'Accessori Tech']
+  const categoryLinks = CATEGORY_LABELS
     .map(label => `<a href="/" class="font-sans font-medium text-sm md:text-base transition-colors px-2 py-1 rounded text-gray-300 hover:text-[#06b6d4]">${escapeHtml(label)}</a>`)
     .join('\n          ');
 
@@ -68,6 +70,10 @@ function renderHeader() {
 }
 
 function renderFooter() {
+  const categoryButtons = CATEGORY_LABELS
+    .map(label => `<li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">${escapeHtml(label)}</button></li>`)
+    .join('\n              ');
+
   return `<footer class="bg-black text-gray-400 font-sans border-t border-gray-900">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
@@ -80,10 +86,7 @@ function renderFooter() {
           <div>
             <h4 class="text-white font-bold tracking-wider uppercase text-sm mb-4">Categorie</h4>
             <ul class="space-y-2 text-sm">
-              <li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">PC & Laptop</button></li>
-              <li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Telefoni</button></li>
-              <li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Smart TV</button></li>
-              <li><button class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Accessori Tech</button></li>
+              ${categoryButtons}
               <li><a href="/blog/" class="hover:text-[#06b6d4] transition-colors text-left text-gray-400">Blog</a></li>
             </ul>
           </div>
@@ -158,7 +161,13 @@ function renderListBody(posts) {
       </div>`;
 }
 
-function renderPage({ title, ogTitle, description, canonicalUrl, ogImage, publishedTime, bodyHtml }) {
+function serializePreloadedPosts(posts) {
+  // Escapar "<" evita que un </script> (o <!--) dentro del JSON corte el
+  // script tag antes de tiempo -- técnica estándar de "JSON script island".
+  return JSON.stringify(posts).replace(/</g, '\\u003c');
+}
+
+function renderPage({ title, ogTitle, description, canonicalUrl, ogImage, publishedTime, bodyHtml, preloadedPosts }) {
   const ogTags = `
     <meta property="og:type" content="${publishedTime ? 'article' : 'website'}">
     <meta property="og:site_name" content="GoSmArtic">
@@ -193,6 +202,7 @@ ${HEAD_ASSETS}
       ${renderFooter()}
     </div></div>
 
+    <script>window.__PRELOADED_POSTS__ = ${serializePreloadedPosts(preloadedPosts)};</script>
     <script type="text/babel" src="/app.js"></script>
 
 </body>
@@ -243,6 +253,7 @@ async function main() {
       ogImage: post.imagenUrl,
       publishedTime: post.fecha,
       bodyHtml: renderArticleBody(post),
+      preloadedPosts: [post],
     });
     fs.writeFileSync(path.join(dir, 'index.html'), html);
   }
@@ -255,6 +266,7 @@ async function main() {
     canonicalUrl: `${SITE_URL}/blog/`,
     ogImage: null,
     publishedTime: null,
+    preloadedPosts: sortedByDate,
     bodyHtml: renderListBody(sortedByDate),
   });
   fs.writeFileSync(path.join(BLOG_DIR, 'index.html'), listHtml);

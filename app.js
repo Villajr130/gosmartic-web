@@ -509,7 +509,9 @@ const buildOffersRepoUrl = (sha, path) =>
   `https://cdn.jsdelivr.net/gh/${OFFERS_REPO}@${sha || 'main'}/${path}`;
 
 const useBlogPosts = () => {
-  const [data, setData] = React.useState({ posts: [] });
+  const [data, setData] = React.useState(() =>
+    window.__PRELOADED_POSTS__ ? { posts: window.__PRELOADED_POSTS__ } : { posts: [] }
+  );
   React.useEffect(() => {
     getOffersRepoSha()
       .catch(err => {
@@ -594,6 +596,7 @@ const BlogListView = ({ posts }) => {
       </div>
     );
   }
+  const sortedPosts = [...posts].sort((a, b) => (a.fecha < b.fecha ? 1 : a.fecha > b.fecha ? -1 : 0));
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
 <h1 className="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">Blog GoSmArtic</h1>
@@ -604,7 +607,7 @@ const BlogListView = ({ posts }) => {
   <NewsletterForm />
 </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-        {posts.map(post => (
+        {sortedPosts.map(post => (
           <a key={post.id} href={`/blog/${post.slug}/`} className="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
             <img src={post.imagenUrl} alt={post.titulo} className="w-full h-48 object-cover" />
             <div className="p-5">

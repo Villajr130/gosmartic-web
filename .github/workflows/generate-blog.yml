@@ -3,6 +3,10 @@ on:
   repository_dispatch:
     types: [blog-post-published]
   workflow_dispatch:
+  # TEMPORAL: quitar en el PR a main (ver commit anterior en esta rama).
+  push:
+    branches:
+      - seo-blog-migration
 permissions:
   contents: write
 jobs:
