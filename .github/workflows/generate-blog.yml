@@ -3,12 +3,6 @@ on:
   repository_dispatch:
     types: [blog-post-published]
   workflow_dispatch:
-  # TEMPORAL: permite probar este workflow en una rama antes de mergear a main,
-  # ya que GitHub no habilita workflow_dispatch para workflows que solo existen
-  # en una rama no-default. Quitar este trigger `push` en el PR a main.
-  push:
-    branches:
-      - seo-blog-migration
 permissions:
   contents: write
 jobs:
