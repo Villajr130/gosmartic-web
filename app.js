@@ -656,11 +656,21 @@ const BlogPostView = ({ post }) => {
       <a href="/blog/" className="inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline mb-6">&larr; Torna al blog</a>
       <span className="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-2 block">{post.categoria}</span>
       <h1 className="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">{post.titulo}</h1>
-      <p className="text-xs text-gray-400 mb-8">{post.fecha}{post.autor ? ` · ${post.autor}` : ''}</p>
+      <p className="text-xs text-gray-400 mb-3">{post.fecha}{post.autor ? ` · ${post.autor}` : ''}</p>
+      <a
+        href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#1DA851] hover:underline mb-8"
+      >💬 Segui il canale WhatsApp per le offerte in tempo reale</a>
       {post.imagenUrl && (
         <img src={post.imagenUrl} alt={post.titulo} className="w-full rounded-xl mb-8 object-cover max-h-96" />
       )}
       <div className="prose prose-sm sm:prose-base max-w-none text-gray-800" dangerouslySetInnerHTML={{ __html: post.contenido_html }} />
+      <div className="mt-12 bg-gray-50 border border-gray-100 rounded-xl p-6 text-center">
+        <p className="font-sans text-sm text-gray-600 mb-4">Ti è piaciuta questa guida? Ricevi le offerte in tempo reale sul nostro canale WhatsApp.</p>
+        <WhatsAppChannelButton />
+      </div>
     </article>
   );
 };

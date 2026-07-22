@@ -125,14 +125,23 @@ function renderNewsletterForm() {
       </form>`;
 }
 
+function renderWhatsAppInlineLink() {
+  return `<a href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#1DA851] hover:underline mb-8">💬 Segui il canale WhatsApp per le offerte in tempo reale</a>`;
+}
+
 function renderArticleBody(post) {
   return `<article class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-16 font-sans">
         <a href="/blog/" class="inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline mb-6">&larr; Torna al blog</a>
         <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-2 block">${escapeHtml(post.categoria)}</span>
         <h1 class="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">${escapeHtml(post.titulo)}</h1>
-        <p class="text-xs text-gray-400 mb-8">${escapeHtml(post.fecha)}${post.autor ? ` · ${escapeHtml(post.autor)}` : ''}</p>
+        <p class="text-xs text-gray-400 mb-3">${escapeHtml(post.fecha)}${post.autor ? ` · ${escapeHtml(post.autor)}` : ''}</p>
+        ${renderWhatsAppInlineLink()}
         ${post.imagenUrl ? `<img src="${escapeHtml(post.imagenUrl)}" alt="${escapeHtml(post.titulo)}" class="w-full rounded-xl mb-8 object-cover max-h-96">` : ''}
         <div class="prose prose-sm sm:prose-base max-w-none text-gray-800">${post.contenido_html}</div>
+        <div class="mt-12 bg-gray-50 border border-gray-100 rounded-xl p-6 text-center">
+          <p class="font-sans text-sm text-gray-600 mb-4">Ti è piaciuta questa guida? Ricevi le offerte in tempo reale sul nostro canale WhatsApp.</p>
+          ${renderWhatsAppButton()}
+        </div>
       </article>`;
 }
 
