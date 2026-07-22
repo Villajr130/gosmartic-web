@@ -126,7 +126,11 @@ function renderNewsletterForm() {
 }
 
 function renderWhatsAppInlineLink() {
-  return `<a href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#1DA851] hover:underline mb-8">💬 Segui il canale WhatsApp per le offerte in tempo reale</a>`;
+  return `<a href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#1DA851] hover:underline">💬 Segui il canale WhatsApp per le offerte in tempo reale</a>`;
+}
+
+function renderShareButton() {
+  return `<button type="button" class="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-gray-500 hover:text-gray-700 hover:underline">🔗 Condividi</button>`;
 }
 
 function renderArticleBody(post) {
@@ -135,7 +139,10 @@ function renderArticleBody(post) {
         <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-2 block">${escapeHtml(post.categoria)}</span>
         <h1 class="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">${escapeHtml(post.titulo)}</h1>
         <p class="text-xs text-gray-400 mb-3">${escapeHtml(post.fecha)}${post.autor ? ` · ${escapeHtml(post.autor)}` : ''}</p>
-        ${renderWhatsAppInlineLink()}
+        <div class="flex flex-wrap items-center gap-4 mb-8">
+          ${renderWhatsAppInlineLink()}
+          ${renderShareButton()}
+        </div>
         ${post.imagenUrl ? `<img src="${escapeHtml(post.imagenUrl)}" alt="${escapeHtml(post.titulo)}" class="w-full rounded-xl mb-8 object-cover max-h-96">` : ''}
         <div class="prose prose-sm sm:prose-base max-w-none text-gray-800">${post.contenido_html}</div>
         <div class="mt-12 bg-gray-50 border border-gray-100 rounded-xl p-6 text-center">

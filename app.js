@@ -643,6 +643,36 @@ const NewsletterForm = () => {
   );
 };
 
+const ShareButton = ({ url, title }) => {
+  const [copied, setCopied] = React.useState(false);
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+      } catch (err) {
+        // L'utente ha annullato la condivisione: nessuna azione necessaria.
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      // Clipboard non disponibile in questo contesto: nessuna azione necessaria.
+    }
+  };
+
+  return (
+    <button
+      type="button"
+      onClick={handleShare}
+      className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-gray-500 hover:text-gray-700 hover:underline"
+    >{`🔗 ${copied ? '✓ Link copiato!' : 'Condividi'}`}</button>
+  );
+};
+
 const BlogPostView = ({ post }) => {
   if (!post) {
     return (
@@ -657,12 +687,15 @@ const BlogPostView = ({ post }) => {
       <span className="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-2 block">{post.categoria}</span>
       <h1 className="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">{post.titulo}</h1>
       <p className="text-xs text-gray-400 mb-3">{post.fecha}{post.autor ? ` · ${post.autor}` : ''}</p>
-      <a
-        href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u"
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#1DA851] hover:underline mb-8"
-      >💬 Segui il canale WhatsApp per le offerte in tempo reale</a>
+      <div className="flex flex-wrap items-center gap-4 mb-8">
+        <a
+          href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1.5 text-xs font-sans font-bold text-[#1DA851] hover:underline"
+        >💬 Segui il canale WhatsApp per le offerte in tempo reale</a>
+        <ShareButton url={`https://gosmartic.com/blog/${post.slug}/`} title={post.titulo} />
+      </div>
       {post.imagenUrl && (
         <img src={post.imagenUrl} alt={post.titulo} className="w-full rounded-xl mb-8 object-cover max-h-96" />
       )}
