@@ -5,6 +5,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: write
+concurrency:
+  group: generate-blog-pages
+  cancel-in-progress: false
 jobs:
   generate:
     runs-on: ubuntu-latest
