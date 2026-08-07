@@ -677,7 +677,7 @@ const BlogPostView = ({ post }) => {
       <a href="/blog/" className="inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline mb-6">&larr; Torna al blog</a>
       <span className="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-2 block">{post.categoria}</span>
       <h1 className="font-sans font-bold text-3xl sm:text-4xl text-gray-900 mb-4">{post.titulo}</h1>
-      <p className="text-xs text-gray-400 mb-3">{post.fecha}{post.autor ? ` · ${post.autor}` : ''}</p>
+      <p className="text-xs text-gray-400 mb-3">{`${post.fecha}${post.autor ? ` · ${post.autor}` : ''}`}</p>
       <div className="flex flex-wrap items-center gap-4 mb-8">
         <a
           href="https://whatsapp.com/channel/0029Vb8JW5c8kyyNuVPTEZ1u"
