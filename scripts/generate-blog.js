@@ -93,8 +93,8 @@ function renderFooter() {
           <div>
             <h4 class="text-white font-bold tracking-wider uppercase text-sm mb-4">Legale</h4>
             <ul class="space-y-2 text-sm">
-              <li><button class="hover:text-[#06b6d4] transition-colors text-left block">Privacy Policy</button></li>
-              <li><button class="hover:text-[#06b6d4] transition-colors text-left block">Termini di servizio</button></li>
+              <li><a href="/privacy-policy/" class="hover:text-[#06b6d4] transition-colors text-left block">Privacy Policy</a></li>
+              <li><a href="/termini-di-servizio/" class="hover:text-[#06b6d4] transition-colors text-left block">Termini di servizio</a></li>
               <li><button class="hover:text-[#06b6d4] transition-colors text-left block mt-1">Contatti</button></li>
             </ul>
           </div>
@@ -177,6 +177,49 @@ function renderListBody(posts) {
       </div>`;
 }
 
+// Contenido de las páginas legales, en espejo de PrivacyPolicyView/TermsOfServiceView
+// en app.js -- deben coincidir exactamente para que la hidratación de React no
+// descarte el HTML pre-renderizado.
+function renderPrivacyBody() {
+  return `<div class="max-w-4xl mx-auto px-4 py-12 font-sans text-gray-800 leading-relaxed">
+        <a href="/" class="mb-6 inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline">&larr; Torna alla Home</a>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Informativa sulla Privacy (Privacy Policy)</h1>
+        <p class="text-xs text-gray-500 mb-8">Ultimo aggiornamento: Luglio 2026</p>
+        <div class="space-y-6 text-sm">
+          <section>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">1. Informazioni Generali</h3>
+            <p>Benvenuto su GoSmArtic. La presente Informativa sulla privacy descrive le modalità con cui raccogliamo, utilizziamo e proteggiamo i dati personali degli utenti che visitano il nostro sito web dedicato alla selezione delle migliori offerte tecnologiche presenti su Amazon.</p>
+          </section>
+          <section>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">2. Dati Raccolti e Finalità</h3>
+            <p>GoSmArtic è un sito puramente informativo e di affiliazione commerciale. Non richiediamo la creazione di account né raccogliamo attivamente dati identificativi como nomi o indirizzi fisici.</p>
+          </section>
+          <section>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">3. Affiliazione Amazon ed Cookie di Terze Parti</h3>
+            <p>Questo sito partecipa al <strong>Programma Affiliazione Amazon EU</strong>. Facendo clic sui pulsanti "Compra su Amazon", l'utente viene reindirizzato alla piattaforma ufficiale Amazon. Amazon utilizza cookie proprietari per tracciare la provenienza dei clic e attribuire correttamente le commissioni generate.</p>
+          </section>
+        </div>
+      </div>`;
+}
+
+function renderTermsBody() {
+  return `<div class="max-w-4xl mx-auto px-4 py-12 font-sans text-gray-800 leading-relaxed">
+        <a href="/" class="mb-6 inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline">&larr; Torna alla Home</a>
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">Termini di Servizio (Terms of Service)</h1>
+        <p class="text-xs text-gray-500 mb-8">Ultimo aggiornamento: Luglio 2026</p>
+        <div class="space-y-6 text-sm">
+          <section>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">1. Accettazione dei Termini</h3>
+            <p>L'accesso e l'utilizzo del sito GoSmArtic sono soggetti all'accettazione e alla conformità con i presenti Termini di servizio.</p>
+          </section>
+          <section>
+            <h3 class="text-lg font-bold text-gray-900 mb-2">2. Natura del Servizio</h3>
+            <p>GoSmArtic è una plataforma di curatela e aggregazione di prodotti tecnologici. Non siamo un negozio online, non vendiamo direttamente alcun prodotto, non gestiamo transazioni, spedizioni, resi o garanzie post-vendita.</p>
+          </section>
+        </div>
+      </div>`;
+}
+
 function serializePreloadedPosts(posts) {
   // Escapar "<" evita que un </script> (o <!--) dentro del JSON corte el
   // script tag antes de tiempo -- técnica estándar de "JSON script island".
@@ -230,6 +273,8 @@ function renderSitemap(posts) {
   const urls = [
     `  <url><loc>${SITE_URL}/</loc></url>`,
     `  <url><loc>${SITE_URL}/blog/</loc></url>`,
+    `  <url><loc>${SITE_URL}/privacy-policy/</loc></url>`,
+    `  <url><loc>${SITE_URL}/termini-di-servizio/</loc></url>`,
     ...posts.map(p => `  <url><loc>${SITE_URL}/blog/${p.slug}/</loc><lastmod>${p.fecha}</lastmod></url>`),
   ].join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
@@ -287,10 +332,36 @@ async function main() {
   });
   fs.writeFileSync(path.join(BLOG_DIR, 'index.html'), listHtml);
 
+  const privacyDir = path.join(ROOT_DIR, 'privacy-policy');
+  fs.mkdirSync(privacyDir, { recursive: true });
+  fs.writeFileSync(path.join(privacyDir, 'index.html'), renderPage({
+    title: 'Informativa sulla Privacy | GoSmArtic',
+    ogTitle: 'Informativa sulla Privacy',
+    description: 'Informativa sulla privacy di GoSmArtic: dati raccolti, cookie di terze parti e programma di affiliazione Amazon.',
+    canonicalUrl: `${SITE_URL}/privacy-policy/`,
+    ogImage: null,
+    publishedTime: null,
+    preloadedPosts: [],
+    bodyHtml: renderPrivacyBody(),
+  }));
+
+  const termsDir = path.join(ROOT_DIR, 'termini-di-servizio');
+  fs.mkdirSync(termsDir, { recursive: true });
+  fs.writeFileSync(path.join(termsDir, 'index.html'), renderPage({
+    title: 'Termini di Servizio | GoSmArtic',
+    ogTitle: 'Termini di Servizio',
+    description: 'Termini di servizio di GoSmArtic: condizioni di utilizzo del sito e natura del servizio di aggregazione prodotti tecnologici.',
+    canonicalUrl: `${SITE_URL}/termini-di-servizio/`,
+    ogImage: null,
+    publishedTime: null,
+    preloadedPosts: [],
+    bodyHtml: renderTermsBody(),
+  }));
+
   fs.writeFileSync(path.join(ROOT_DIR, 'sitemap.xml'), renderSitemap(posts));
   fs.writeFileSync(path.join(ROOT_DIR, 'robots.txt'), renderRobots());
 
-  console.log(`Generadas ${posts.length} páginas de artículo + listado + sitemap.xml + robots.txt`);
+  console.log(`Generadas ${posts.length} páginas de artículo + listado + 2 páginas legales + sitemap.xml + robots.txt`);
 }
 
 main().catch(err => {

@@ -290,12 +290,10 @@ const AllProductsSection = ({ productos, activeFilter, onResetFilter, offers }) 
 // ==========================================
 // COMPONENTI LEGALI
 // ==========================================
-const PrivacyPolicyView = ({ onBack }) => {
+const PrivacyPolicyView = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 font-sans text-gray-800 leading-relaxed">
-      <button onClick={onBack} className="mb-6 inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline">
-        &larr; Torna alla Home
-      </button>
+      <a href="/" className="mb-6 inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline">&larr; Torna alla Home</a>
       <h1 className="text-3xl font-bold text-gray-900 mb-2">Informativa sulla Privacy (Privacy Policy)</h1>
       <p className="text-xs text-gray-500 mb-8">Ultimo aggiornamento: Luglio 2026</p>
 
@@ -317,12 +315,10 @@ const PrivacyPolicyView = ({ onBack }) => {
   );
 };
 
-const TermsOfServiceView = ({ onBack }) => {
+const TermsOfServiceView = () => {
   return (
     <div className="max-w-4xl mx-auto px-4 py-12 font-sans text-gray-800 leading-relaxed">
-      <button onClick={onBack} className="mb-6 inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline">
-        &larr; Torna alla Home
-      </button>
+      <a href="/" className="mb-6 inline-flex items-center text-sm font-bold text-[#2563eb] hover:underline">&larr; Torna alla Home</a>
       <h1 className="text-3xl font-bold text-gray-900 mb-2">Termini di Servizio (Terms of Service)</h1>
       <p className="text-xs text-gray-500 mb-8">Ultimo aggiornamento: Luglio 2026</p>
 
@@ -358,11 +354,6 @@ const Footer = ({ onNavigate, onSelectCategory, onContactClick }) => {
     }, 100);
   };
 
-  const handleLegalClick = (view) => {
-    window.location.hash = '';
-    onNavigate(view);
-  };
-
   return (
     <footer className="bg-black text-gray-400 font-sans border-t border-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -386,8 +377,8 @@ const Footer = ({ onNavigate, onSelectCategory, onContactClick }) => {
           <div>
             <h4 className="text-white font-bold tracking-wider uppercase text-sm mb-4">Legale</h4>
             <ul className="space-y-2 text-sm">
-              <li><button onClick={() => handleLegalClick('privacy')} className="hover:text-[#06b6d4] transition-colors text-left block">Privacy Policy</button></li>
-              <li><button onClick={() => handleLegalClick('termini')} className="hover:text-[#06b6d4] transition-colors text-left block">Termini di servizio</button></li>
+              <li><a href="/privacy-policy/" className="hover:text-[#06b6d4] transition-colors text-left block">Privacy Policy</a></li>
+              <li><a href="/termini-di-servizio/" className="hover:text-[#06b6d4] transition-colors text-left block">Termini di servizio</a></li>
               <li><button onClick={(e) => { e.preventDefault(); onContactClick(); }} className="hover:text-[#06b6d4] transition-colors text-left block mt-1">Contatti</button></li>
             </ul>
           </div>
@@ -724,6 +715,8 @@ const App = () => {
   const pathSlugMatch = pathname.match(/^\/blog\/([^\/]+)\/?$/);
   const pathSlug = pathSlugMatch ? decodeURIComponent(pathSlugMatch[1]) : null;
   const isPathBlogList = pathname === '/blog' || pathname === '/blog/';
+  const isPrivacyPage = pathname === '/privacy-policy' || pathname === '/privacy-policy/';
+  const isTermsPage = pathname === '/termini-di-servizio' || pathname === '/termini-di-servizio/';
 
   const blogSlug = hashSlug || pathSlug;
   const isBlogList = isHashBlogList || isPathBlogList;
@@ -736,10 +729,10 @@ const App = () => {
     mainContent = <BlogPostView post={post} />;
   } else if (isBlogList) {
     mainContent = <BlogListView posts={blogData.posts || []} />;
-  } else if (view === 'privacy') {
-    mainContent = <PrivacyPolicyView onBack={() => setView('home')} />;
-  } else if (view === 'termini') {
-    mainContent = <TermsOfServiceView onBack={() => setView('home')} />;
+  } else if (isPrivacyPage) {
+    mainContent = <PrivacyPolicyView />;
+  } else if (isTermsPage) {
+    mainContent = <TermsOfServiceView />;
   } else {
     mainContent = (
       <React.Fragment>
