@@ -27,6 +27,18 @@ const HEAD_ASSETS = `    <script src="https://cdn.tailwindcss.com?plugins=typogr
     <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>`;
 
+// Colapsa el whitespace entre tags (">  <" -> "><"). Es necesario porque React
+// omite por completo, en tiempo de compilación, las líneas de JSX que
+// contienen solo whitespace entre elementos -- no generan ningún nodo de texto.
+// El HTML crudo, en cambio, sí conserva esas líneas como nodos de texto reales
+// al ser parseado por el navegador. Esa asimetría (indentación multi-línea acá
+// vs. JSX de un lado) es lo que hacía fallar la hidratación de React: el árbol
+// que arma <App/> en el cliente no tenía esos nodos de texto "fantasma", así
+// que no coincidía con el DOM ya presente.
+function compactHtml(html) {
+  return html.replace(/>\s+</g, '><').trim();
+}
+
 function escapeHtml(str) {
   return String(str)
     .replace(/&/g, '&amp;')
@@ -44,9 +56,7 @@ function renderLogo() {
           <span class="text-white font-sans font-bold text-lg">G</span>
           <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-[#06b6d4] rounded-full ring-1 ring-black"></span>
         </div>
-        <span class="font-sans font-bold text-xl tracking-tight text-white">
-          Go<span class="text-[#06b6d4]">Sm</span>Ar<span class="text-[#06b6d4]">tic</span>
-        </span>
+        <span class="font-sans font-bold text-xl tracking-tight text-white">Go<span class="text-[#06b6d4]">Sm</span>Ar<span class="text-[#06b6d4]">tic</span></span>
       </div>`;
 }
 
@@ -79,9 +89,7 @@ function renderFooter() {
         <div class="grid grid-cols-1 md:grid-cols-3 gap-10 mb-10">
           <div class="space-y-4">
             ${renderLogo()}
-            <p class="text-sm text-gray-500 max-w-sm leading-relaxed">
-              Il tuo portale di fiducia per trovare la migliore tecnologia selezionata direttamente da Amazon. Qualità ed efficienza garantite per il 2026.
-            </p>
+            <p class="text-sm text-gray-500 max-w-sm leading-relaxed">Il tuo portale di fiducia per trovare la migliore tecnologia selezionata direttamente da Amazon. Qualità ed efficienza garantite per il 2026.</p>
           </div>
           <div>
             <h4 class="text-white font-bold tracking-wider uppercase text-sm mb-4">Categorie</h4>
@@ -102,9 +110,7 @@ function renderFooter() {
         <div class="border-t border-gray-900 my-8"></div>
         <div class="text-center space-y-4">
           <p class="text-sm text-gray-500">&copy; 2026 GoSmArtic. Tutti i diritti riservati.</p>
-          <p class="text-xs text-gray-600 max-w-3xl mx-auto leading-normal">
-            Disclaimer di affiliazione: GoSmArtic partecipa al Programma Affiliazione Amazon EU. La commissione non comporta alcun costo aggiuntivo per l'utente.
-          </p>
+          <p class="text-xs text-gray-600 max-w-3xl mx-auto leading-normal">Disclaimer di affiliazione: GoSmArtic partecipa al Programma Affiliazione Amazon EU. La commissione non comporta alcun costo aggiuntivo per l'utente.</p>
         </div>
       </div>
     </footer>`;
@@ -253,13 +259,7 @@ ${HEAD_ASSETS}
 </head>
 <body class="bg-gray-50 antialiased">
 
-    <div id="root"><div class="flex flex-col min-h-screen">
-      ${renderHeader()}
-      <main class="flex-grow">
-      ${bodyHtml}
-      </main>
-      ${renderFooter()}
-    </div></div>
+    <div id="root">${compactHtml(`<div class="flex flex-col min-h-screen">${renderHeader()}<main class="flex-grow">${bodyHtml}</main>${renderFooter()}</div>`)}</div>
 
     <script>window.__PRELOADED_POSTS__ = ${serializePreloadedPosts(preloadedPosts)};</script>
     <script type="text/babel" src="/app.js"></script>
