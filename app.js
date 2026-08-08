@@ -510,11 +510,18 @@ const useBlogPosts = () => {
         return null;
       })
       .then(sha => fetch(buildOffersRepoUrl(sha, 'data/blog-posts.json'), { cache: 'no-store' }))
-      .then(res => res.json())
-      .then(setData)
+      .then(res => {
+        if (!res.ok) throw new Error('blog-posts.json respondió ' + res.status);
+        return res.json();
+      })
+      .then(json => {
+        if (!json || !Array.isArray(json.posts)) {
+          throw new Error('blog-posts.json malformado');
+        }
+        setData(json);
+      })
       .catch(err => {
-        console.error('Error cargando blog-posts.json:', err);
-        setData({ posts: [] });
+        console.error('Error cargando blog-posts.json, se conservan los posts previos:', err);
       });
   }, []);
   return data;
