@@ -15,7 +15,12 @@ const DEFAULT_DATA_URL = 'https://raw.githubusercontent.com/Villajr130/gosmartic
 const ROOT_DIR = path.join(__dirname, '..');
 const BLOG_DIR = path.join(ROOT_DIR, 'blog');
 
-const HEAD_ASSETS = `    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+const HEAD_ASSETS = `    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png">
+    <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
     <script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
     <script>
       window.OneSignalDeferred = window.OneSignalDeferred || [];
