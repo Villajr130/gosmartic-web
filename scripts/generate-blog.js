@@ -232,7 +232,7 @@ function serializePreloadedPosts(posts) {
   return JSON.stringify(posts).replace(/</g, '\\u003c');
 }
 
-function renderPage({ title, ogTitle, description, canonicalUrl, ogImage, publishedTime, bodyHtml, preloadedPosts }) {
+function renderPage({ title, ogTitle, description, canonicalUrl, ogImage, publishedTime, bodyHtml, preloadedPosts, noindex = false }) {
   const ogTags = `
     <meta property="og:type" content="${publishedTime ? 'article' : 'website'}">
     <meta property="og:site_name" content="GoSmArtic">
@@ -253,7 +253,8 @@ function renderPage({ title, ogTitle, description, canonicalUrl, ogImage, publis
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>${escapeHtml(title)}</title>
     <meta name="description" content="${escapeHtml(description)}">
-    <link rel="canonical" href="${canonicalUrl}">
+    <link rel="canonical" href="${canonicalUrl}">${noindex ? `
+    <meta name="robots" content="noindex, follow">` : ''}
 ${ogTags}
 ${HEAD_ASSETS}
 </head>
@@ -275,7 +276,7 @@ function renderSitemap(posts) {
     `  <url><loc>${SITE_URL}/blog/</loc></url>`,
     `  <url><loc>${SITE_URL}/privacy-policy/</loc></url>`,
     `  <url><loc>${SITE_URL}/termini-di-servizio/</loc></url>`,
-    ...posts.map(p => `  <url><loc>${SITE_URL}/blog/${p.slug}/</loc><lastmod>${p.fecha}</lastmod></url>`),
+    ...posts.filter(p => p.noindex !== true).map(p => `  <url><loc>${SITE_URL}/blog/${p.slug}/</loc><lastmod>${p.fecha}</lastmod></url>`),
   ].join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
@@ -315,6 +316,7 @@ async function main() {
       publishedTime: post.fecha,
       bodyHtml: renderArticleBody(post),
       preloadedPosts: [post],
+      noindex: post.noindex === true,
     });
     fs.writeFileSync(path.join(dir, 'index.html'), html);
   }
