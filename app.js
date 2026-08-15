@@ -607,7 +607,7 @@ const BlogListView = ({ posts }) => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {sortedPosts.map(post => (
           <a key={post.id} href={`/blog/${post.slug}/`} className="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
-            <img src={post.imagenUrl} alt={post.titulo} className={`w-full h-48 object-cover ${post.id === 15 ? 'object-top' : ''}`} />
+            <img src={post.imagenUrl} alt={post.titulo} className={`w-full h-48 object-cover ${post.id === 15 ? 'object-top' : ''} ${post.id === 16 ? 'object-top' : ''}`} />
             <div className="p-5">
               <span className="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">{post.categoria}</span>
               <h2 className="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">{post.titulo}</h2>
@@ -695,7 +695,7 @@ const BlogPostView = ({ post }) => {
         <ShareButton url={`https://gosmartic.com/blog/${post.slug}/`} title={post.titulo} />
       </div>
       {post.imagenUrl && (
-        <img src={post.imagenUrl} alt={post.titulo} className={`w-full rounded-xl mb-8 object-cover max-h-96 ${post.id === 15 ? 'object-top' : ''}`} />
+        <img src={post.imagenUrl} alt={post.titulo} className={`w-full rounded-xl mb-8 object-cover max-h-96 ${post.id === 15 ? 'object-top' : ''} ${post.id === 16 ? 'object-top' : ''}`} />
       )}
       <div className="prose prose-sm sm:prose-base max-w-none text-gray-800" dangerouslySetInnerHTML={{ __html: post.contenido_html }} />
       <div className="mt-12 bg-gray-50 border border-gray-100 rounded-xl p-6 text-center">

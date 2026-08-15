@@ -154,7 +154,7 @@ function renderArticleBody(post) {
           ${renderWhatsAppInlineLink()}
           ${renderShareButton()}
         </div>
-        ${post.imagenUrl ? `<img src="${escapeHtml(post.imagenUrl)}" alt="${escapeHtml(post.titulo)}" class="w-full rounded-xl mb-8 object-cover max-h-96${post.id === 15 ? ' object-top' : ''}">` : ''}
+        ${post.imagenUrl ? `<img src="${escapeHtml(post.imagenUrl)}" alt="${escapeHtml(post.titulo)}" class="w-full rounded-xl mb-8 object-cover max-h-96${post.id === 15 ? ' object-top' : ''}${post.id === 16 ? ' object-top' : ''}">` : ''}
         <div class="prose prose-sm sm:prose-base max-w-none text-gray-800">${post.contenido_html}</div>
         <div class="mt-12 bg-gray-50 border border-gray-100 rounded-xl p-6 text-center">
           <p class="font-sans text-sm text-gray-600 mb-4">Ti è piaciuta questa guida? Ricevi le offerte in tempo reale sul nostro canale WhatsApp.</p>
@@ -165,7 +165,7 @@ function renderArticleBody(post) {
 
 function renderListBody(posts) {
   const cards = posts.map(post => `<a href="/blog/${post.slug}/" class="block bg-white rounded-xl shadow-sm hover:shadow-md border border-gray-100 overflow-hidden transition-all duration-300">
-            <img src="${escapeHtml(post.imagenUrl)}" alt="${escapeHtml(post.titulo)}" class="w-full h-48 object-cover${post.id === 15 ? ' object-top' : ''}">
+            <img src="${escapeHtml(post.imagenUrl)}" alt="${escapeHtml(post.titulo)}" class="w-full h-48 object-cover${post.id === 15 ? ' object-top' : ''}${post.id === 16 ? ' object-top' : ''}">
             <div class="p-5">
               <span class="text-[10px] font-bold text-[#06b6d4] uppercase tracking-widest mb-1 block">${escapeHtml(post.categoria)}</span>
               <h2 class="font-sans font-bold text-gray-900 text-lg mb-2 line-clamp-2">${escapeHtml(post.titulo)}</h2>
